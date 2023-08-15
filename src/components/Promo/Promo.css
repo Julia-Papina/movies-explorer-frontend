@@ -59,7 +59,7 @@
   color: #ffffff;
 }
 .promo__button:hover {
-  opacity: 0.7;
+  opacity: 0.6;
 }
 
 @media screen and (max-width: 1089px) {
@@ -113,8 +113,8 @@
   }
 }
 
-@media screen and (max-width: 350px) {
-  .promo__image {
+@media screen and (max-width: 380px) {
+  .promo__logo {
     max-width: 210px;
   }
   .promo__wrapper {

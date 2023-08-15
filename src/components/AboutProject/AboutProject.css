@@ -88,3 +88,62 @@
   font-size: 14px;
   line-height: 17px;
 }
+
+@media screen and (max-width: 768px) {
+  .about-project__wrapper {
+    padding: 0 50px;
+  }
+
+  .about-project__subtitle {
+    font-size: 12px;
+    line-height: 18px;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .about-project {
+    padding: 70px 0;
+  }
+
+  .about-project__container {
+    display: block;
+  }
+
+  .about-project__title {
+    padding: 56px 0 16px 0;
+    font-size: 18px;
+    font-weight: 400;
+    letter-spacing: -0.72px;
+  }
+
+  .about-project__subtitle {
+    margin-bottom: 0;
+    font-size: 11px;
+    line-height: 16px;
+  }
+
+  .about-project__weeks {
+    max-width: 100%;
+    margin-top: 60px;
+  }
+
+  .about-project__wrapper {
+    padding: 0 18px;
+  }
+  .about-project__weeks-one {
+    font-size: 11px;
+  }
+
+  .about-project__weeks-four {
+    font-size: 11px;
+  }
+
+  .about-project__stack-backend {
+    font-size: 11px;
+    font-family: "Suisse Intl";
+  }
+  .about-project__stack-frontend {
+    font-size: 11px;
+    font-family: "Suisse Intl";
+  }
+}

@@ -36,9 +36,11 @@
   opacity: 0.5;
   max-width: 310px;
 }
+
 .promo__logo {
   max-width: 310px;
 }
+
 .promo__button {
   width: 129px;
   height: 36px;
@@ -54,10 +56,12 @@
   line-height: 16px;
   cursor: pointer;
 }
+
 .promo__link {
   text-decoration: none;
   color: #ffffff;
 }
+
 .promo__button:hover {
   opacity: 0.6;
 }
@@ -67,6 +71,7 @@
     justify-content: center;
     text-align: center;
   }
+  
   .promo__wrapper {
     text-align: center;
   }

@@ -2,7 +2,7 @@ export const moviesArray = [
     {
       movieId: 1,
       nameRU: 'В погоне за Бенкси',
-      duration: 42,
+      duration: 27,
       thumbnail: 'https://i.ibb.co/7yzZpvD/pic-COLOR-pic-11.jpg',
     },
     {

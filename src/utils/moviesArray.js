@@ -4,12 +4,14 @@ export const moviesArray = [
       nameRU: 'В погоне за Бенкси',
       duration: 27,
       thumbnail: 'https://i.ibb.co/7yzZpvD/pic-COLOR-pic-11.jpg',
+      isSave: 'true',
     },
     {
       movieId: 2,
       nameRU: 'В погоне за Бенкси',
       duration: 42,
       thumbnail: 'https://i.ibb.co/YjBc3Wq/pic-COLOR-pic.jpg',
+      isSave: 'true',
     },
     {
       movieId: 3,
@@ -34,12 +36,14 @@ export const moviesArray = [
       nameRU: 'В погоне за Бенкси',
       duration: 42,
       thumbnail: 'https://i.ibb.co/HBb3VyL/pic-COLOR-pic-7.jpg',
+      isSave: 'true',
     },
     {
       movieId: 7,
       nameRU: 'В погоне за Бенкси',
       duration: 42,
       thumbnail: 'https://i.ibb.co/5jj192V/pic-COLOR-pic-5.jpg',
+      isSave: 'true',
     },
     {
       movieId: 8,
@@ -64,6 +68,7 @@ export const moviesArray = [
       nameRU: 'В погоне за Бенкси',
       duration: 42,
       thumbnail: 'https://i.ibb.co/dmrF8mn/pic-COLOR-pic-2.jpg',
+      isSave: 'true',
     },
     {
       movieId: 12,

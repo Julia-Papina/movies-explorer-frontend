@@ -1,8 +1,8 @@
-import { useState } from 'react';
-import './FilterCheckbox.css';
+import { useState } from "react";
+import "./FilterCheckbox.css";
 
 function FilterCheckbox({ text }) {
-    const [checkedFilter, setCheckedFilter] = useState(false);
+  const [checkedFilter, setCheckedFilter] = useState(false);
 
   const handleChangeFilter = () => {
     setCheckedFilter(!checkedFilter);
@@ -20,8 +20,6 @@ function FilterCheckbox({ text }) {
       <span className="filter-checkbox__text">{text}</span>
     </label>
   );
-
-
 }
 
 export default FilterCheckbox;

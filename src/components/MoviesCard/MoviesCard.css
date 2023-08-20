@@ -33,10 +33,10 @@
     margin: 0 auto;
   }
 
+
 .movies-card__button {
   text-align: center;
   margin: 18px auto;
-  padding: 9px 15px;
   border-radius: 30px;
   background: #313131;
   color: #fff;
@@ -47,6 +47,10 @@
   cursor: pointer;
   width: 100px;
   height: 29px;
+  padding: 9px 15px;
+}
+.movies-card__button_typ_save {
+    padding: 0;
 }
 .movies-card__button:hover {
   opacity: 0.8;

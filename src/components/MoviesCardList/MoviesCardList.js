@@ -15,7 +15,7 @@ function MoviesCardList() {
           {pathname === "/movies"
             ? moviesArray.map((item) => {
                 return (
-                  <MoviesCard movie={item} key={item.movieId} path={pathname} />
+                  <MoviesCard movie={item} key={item.movieId} pathname={pathname} />
                 );
               })
             : null}
@@ -25,7 +25,7 @@ function MoviesCardList() {
           {pathname === "/saved-movies"
             ? moviesSave.map((item) => {
                 return (
-                  <MoviesCard movie={item} key={item.movieId} path={pathname} />
+                  <MoviesCard movie={item} key={item.movieId} pathname={pathname} />
                 );
               })
             : null}

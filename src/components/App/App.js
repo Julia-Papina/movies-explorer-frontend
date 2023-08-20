@@ -3,7 +3,6 @@ import "./App.css";
 
 import { Routes, Route, useLocation } from "react-router-dom";
 
-import Header from "../Header/Header";
 import Main from "../Main/Main";
 import Footer from "../Footer/Footer";
 import Movies from "../Movies/Movies";
@@ -19,12 +18,6 @@ function App() {
   return (
     <div className="App">
       <div className="page">
-        {pathname === "/" ||
-        pathname === "/movies" ||
-        pathname === "/saved-movies" ||
-        pathname === "/profile" ? (
-          <Header />
-        ) : null}
         <main className="main">
           <Routes>
             <Route path="/" element={<Main />} />

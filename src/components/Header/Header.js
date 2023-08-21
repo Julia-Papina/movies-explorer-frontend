@@ -18,12 +18,12 @@ function Header({ isAuth, props }) {
         </Link>
 
         { !isAuth ? (
-          <div className="header__wrapper">
-            <Link className="header__btn" to={"/signup"}>
+          <div className="header__nuv">
+            <Link className="header__button" to={"/signup"}>
               Регистрация
             </Link>
             <Link
-              className="header__btn header__btn_active"
+              className="header__button header__button_active"
               to={"/signin"}
             >
               Войти

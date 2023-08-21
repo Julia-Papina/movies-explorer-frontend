@@ -1,6 +1,7 @@
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import SearchForm from "../SearchForm/SearchForm";
 import Header from "../Header/Header";
+import Footer from "../Footer/Footer";
 
 function Movies() {
   return (
@@ -8,6 +9,7 @@ function Movies() {
       <Header isAuth={true} />
       <SearchForm />
       <MoviesCardList />
+      <Footer />
     </section>
   );
 }

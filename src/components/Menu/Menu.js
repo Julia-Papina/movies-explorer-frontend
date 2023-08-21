@@ -45,7 +45,7 @@ const Menu = ({ isOpen, onClose, props }) => {
           Аккаунт
           <img
             src={iconMain}
-            alt="Переход на страницу профиля"
+            alt="Переход в профиль пользователя"
             className="menu-popup__icon"
           />
         </NavLink>

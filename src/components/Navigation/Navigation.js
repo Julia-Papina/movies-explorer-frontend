@@ -41,13 +41,17 @@ function Navigation(props) {
           <img
             src={iconMain}
             alt="Переход на страницу профиля"
-           className={ pathname === "/" ? 'navigation__icon navigation__icon_type_blue' : 'navigation__icon'}
+            className={
+              pathname === "/"
+                ? "navigation__icon navigation__icon_type_blue"
+                : "navigation__icon"
+            }
           />
         </Link>
       </div>
       <div className="navigation__btn-tab">
         <button
-          onClick={() => setShowPopup(true)}
+          onClick={setShowPopup}
           type="button"
           className="navigation__btn"
         >

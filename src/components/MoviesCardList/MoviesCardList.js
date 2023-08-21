@@ -4,6 +4,7 @@ import MoviesCard from "../MoviesCard/MoviesCard";
 import LoadingButton from "../LoadingButton/LoadingButton";
 import { useLocation } from "react-router-dom";
 import { moviesSave } from "../../utils/moviesSave";
+import Preloader from "../Preloader/Preloader";
 
 function MoviesCardList() {
   const { pathname } = useLocation();
@@ -15,7 +16,11 @@ function MoviesCardList() {
           {pathname === "/movies"
             ? moviesArray.map((item) => {
                 return (
-                  <MoviesCard movie={item} key={item.movieId} pathname={pathname} />
+                  <MoviesCard
+                    movie={item}
+                    key={item.movieId}
+                    pathname={pathname}
+                  />
                 );
               })
             : null}
@@ -25,14 +30,18 @@ function MoviesCardList() {
           {pathname === "/saved-movies"
             ? moviesSave.map((item) => {
                 return (
-                  <MoviesCard movie={item} key={item.movieId} pathname={pathname} />
+                  <MoviesCard
+                    movie={item}
+                    key={item.movieId}
+                    pathname={pathname}
+                  />
                 );
               })
             : null}
         </div>
 
         <div className="movies-card-list__load">
-          {pathname === "/movies" ? <LoadingButton /> : null}
+          {false ? <Preloader /> : <LoadingButton />}
         </div>
       </div>
     </section>

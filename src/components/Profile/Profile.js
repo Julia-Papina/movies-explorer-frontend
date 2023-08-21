@@ -2,7 +2,7 @@ import "./Profile.css";
 import Header from "../Header/Header";
 import { Link } from "react-router-dom";
 
-function Profile({ name = "Виталий", email = "pochta@yandex.ru" }) {
+function Profile() {
   return (
     <>
       <Header isAuth={true} />

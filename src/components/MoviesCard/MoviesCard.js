@@ -1,6 +1,5 @@
 import "./MoviesCard.css";
 import { timeConverter } from "../../utils/timeConverter";
-import saveCard from "../../images/saveCard.svg";
 
 function MoviesCard({ pathname, movie }) {
   const buttontElement =
@@ -9,11 +8,12 @@ function MoviesCard({ pathname, movie }) {
         &#215;
       </button>
     ) : movie.isSave ? (
-      <img
-        src={saveCard}
-        alt="Сохранено"
+      <button
+        type="button"
         className="movies-card__button movies-card__button_typ_save"
-      />
+      >
+        &#10003;
+      </button>
     ) : (
       <button type="button" className="movies-card__button">
         Сохранить

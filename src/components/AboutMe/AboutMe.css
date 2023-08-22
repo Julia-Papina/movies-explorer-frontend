@@ -69,6 +69,9 @@
   max-height: 327px;
 }
 
+.about-me__text {
+  padding-right: 49px;
+}
 @media screen and (max-width: 769px) {
   .about-me {
     padding: 0 50px 0 50px;
@@ -133,7 +136,8 @@
     object-fit: cover;
   }
   .about-me__text {
-    margin-bottom: 70px;
+    margin-bottom: 49px;
+    padding-right: 0;
   }
 }
 

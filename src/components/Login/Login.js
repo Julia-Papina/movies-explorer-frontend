@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 function Login(props) {
   return (
-    <main className="login">
+    <section className="login">
       <form className="login__form">
         <div className="login__wrapper">
           <Link to={"/"}>
@@ -19,9 +19,9 @@ function Login(props) {
               type="email"
               name="email"
               autoComplete="off"
-              minLength={2}
-              maxLength={30}
-              required={true}
+              minLength="2"
+              maxLength="30"
+              required
               placeholder="pochta@yandex.ru"
             />
           </label>
@@ -34,9 +34,9 @@ function Login(props) {
               name="password"
               id="password"
               autoComplete="off"
-              minLength={2}
-              maxLength={30}
-              required={true}
+              minLength="2"
+              maxLength="30"
+              required
               placeholder="••••••••"
             />
           </label>
@@ -53,7 +53,7 @@ function Login(props) {
           </p>
         </div>
       </form>
-    </main>
+    </section>
   );
 }
 

@@ -11,7 +11,7 @@ function SearchForm(props) {
               type="text"
               placeholder="Фильм"
               className="search-form__input"
-              required={true}
+              required
             />
             <button className="search-form__button">Поиск</button>
           </fieldset>

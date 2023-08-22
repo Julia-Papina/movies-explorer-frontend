@@ -1,6 +1,7 @@
 .movies-card-list {
   background-color: inherit;
   flex-grow: 1;
+  margin-bottom: 140px;
 }
 .movies-card-list__container {
   max-width: 1280px;

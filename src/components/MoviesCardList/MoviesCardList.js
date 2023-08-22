@@ -41,7 +41,8 @@ function MoviesCardList() {
         </div>
 
         <div className="movies-card-list__load">
-          {false ? <Preloader /> : <LoadingButton />}
+          {pathname === "/movies" ? <LoadingButton /> : null}
+          {false ? <Preloader /> : null}
         </div>
       </div>
     </section>

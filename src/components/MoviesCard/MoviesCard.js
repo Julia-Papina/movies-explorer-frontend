@@ -1,5 +1,7 @@
 import "./MoviesCard.css";
 import { timeConverter } from "../../utils/timeConverter";
+import { BASE_IMG_LINK } from "../../utils/constants";
+import { Link } from "react-router-dom";
 
 function MoviesCard({ pathname, movie }) {
   const buttontElement =
@@ -7,7 +9,7 @@ function MoviesCard({ pathname, movie }) {
       <button type="button" className="movies-card__button">
         &#215;
       </button>
-    ) : movie.isSave ? (
+    ) : pathname === "/movies" ? (
       <button
         type="button"
         className="movies-card__button movies-card__button_typ_save"
@@ -28,11 +30,21 @@ function MoviesCard({ pathname, movie }) {
           {timeConverter(movie.duration)}
         </span>
       </div>
-      <img
-        className="movies-card__img"
-        src={movie.thumbnail}
-        alt={movie.nameRU}
-      />
+      <div className="movies-card__wrapper">
+        <Link
+          className="movies-card__link"
+          to={movie.trailerLink}
+          target="_blank"
+        >
+          <img
+            className="movies-card__img"
+            src={
+              movie.image.url ? BASE_IMG_LINK + movie.image.url : movie.image
+            }
+            alt={movie.nameRU}
+          />
+        </Link>
+      </div>
       {buttontElement}
     </article>
   );

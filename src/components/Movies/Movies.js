@@ -1,24 +1,27 @@
-import React, { useEffect } from "react";
-import { useState } from "react";
-import * as moviesApi from "../../utils/MoviesApi";
+import { useState, useEffect } from "react";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import SearchForm from "../SearchForm/SearchForm";
-import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
+import * as moviesApi from "../../utils/MoviesApi";
 
 function Movies() {
-  const [moviesList, setMoviesList] = useState([]);
+  const [moviesArray, setMoviesArray] = useState([]);
+
   useEffect(() => {
     moviesApi
-      .getMovies()
-      .then((data) => setMoviesList(data))
-      .catch((err) => alert(`Возникла ошибка ${err}`));
+      .getAllMovies()
+      .then((data) => {
+        setMoviesArray(data);
+      })
+      .catch((err) => {
+        alert(`Возникла ошибка ${err}`);
+      });
   }, []);
+
   return (
     <section className="movies">
-      <Header isAuth={true} />
       <SearchForm />
-      <MoviesCardList moviesList={moviesList} />
+      <MoviesCardList moviesArray={moviesArray} />
       <Footer />
     </section>
   );

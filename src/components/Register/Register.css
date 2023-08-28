@@ -54,7 +54,7 @@
   margin: 6px 0 4px 0;
   display: block;
   max-width: 396px;
-  /*  opacity: 0;*/
+  opacity: 0;
 }
 .register__form-input:focus {
   border-bottom-color: #4285f4;

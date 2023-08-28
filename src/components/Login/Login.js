@@ -1,11 +1,27 @@
 import "./Login.css";
 import logo from "../../images/logo.svg";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 
 function Login(props) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  function handleInputEmail(e) {
+    setEmail(e.target.value);
+  }
+
+  function handleInputPassword(e) {
+    setPassword(e.target.value);
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    props.onLogin(email, password);
+  }
   return (
     <section className="login">
-      <form className="login__form">
+      <form className="login__form" onSubmit={handleSubmit}>
         <div className="login__wrapper">
           <Link to={"/"}>
             <img src={logo} alt="Логотип" className="login__logo-image" />
@@ -23,6 +39,8 @@ function Login(props) {
               maxLength="30"
               required
               placeholder="pochta@yandex.ru"
+              value={email}
+              onChange={handleInputEmail}
             />
           </label>
 
@@ -38,6 +56,8 @@ function Login(props) {
               maxLength="30"
               required
               placeholder="••••••••"
+              value={password}
+              onChange={handleInputPassword}
             />
           </label>
         </div>

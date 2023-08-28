@@ -6,14 +6,14 @@ import { useLocation } from "react-router-dom";
 
 import Preloader from "../Preloader/Preloader";
 
-function MoviesCardList({ moviesList }) {
+function MoviesCardList({ moviesArray }) {
   const { pathname } = useLocation();
 
   return (
     <section className="movies-card-list">
       <div className="movies-card-list__container">
         <div className="movies-card-list__elements">
-          {moviesList?.map((movie) => (
+          {moviesArray?.map((movie) => (
             <MoviesCard key={movie.id} movie={movie} />
           ))}
         </div>

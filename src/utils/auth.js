@@ -8,7 +8,7 @@ function checkResponse(res) {
 
 export const BASE_URL = "http://localhost:3000";
 // export const BASE_URL = "https://api.papina-movies.nomoreparties.co";
-export const register = (email, password) => {
+export const register = (email, password, name) => {
   return fetch(`${BASE_URL}/signup`, {
     method: "POST",
     credentials: "include",
@@ -16,7 +16,7 @@ export const register = (email, password) => {
       Accept: "application/json",
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ email, password }),
+    body: JSON.stringify({ email, password, name }),
   }).then(checkResponse);
 };
 

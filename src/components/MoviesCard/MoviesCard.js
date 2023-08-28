@@ -1,23 +1,26 @@
+// import React, { useState } from "react";
 import "./MoviesCard.css";
 import { timeConverter } from "../../utils/timeConverter";
 import { BASE_IMG_LINK } from "../../utils/constants";
 import { Link } from "react-router-dom";
 
 function MoviesCard({ pathname, movie }) {
+
   const buttontElement =
-    pathname === "/saved-movies" ? (
-      <button type="button" className="movies-card__button">
-        &#215;
-      </button>
-    ) : pathname === "/movies" ? (
+  pathname === "/saved-movies" ? (
+    <button type="button" className="movies-card__button">
+      &#215;
+    </button>
+  ) :
+ pathname === "/movies" ? (
       <button
-        type="button"
+        type="submit"
         className="movies-card__button movies-card__button_typ_save"
       >
         &#10003;
       </button>
     ) : (
-      <button type="button" className="movies-card__button">
+      <button type="submit" className="movies-card__button" >
         Сохранить
       </button>
     );

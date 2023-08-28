@@ -1,19 +1,16 @@
-import SearchForm from '../SearchForm/SearchForm';
-import MoviesCardList from '../MoviesCardList/MoviesCardList';
-import Header from '../Header/Header';
-import Footer from '../Footer/Footer';
+import SearchForm from "../SearchForm/SearchForm";
+import MoviesCardList from "../MoviesCardList/MoviesCardList";
+
+import Footer from "../Footer/Footer";
 
 function SavedMovies() {
-    return (
-        <section className="saved-movies">
-      <Header isAuth={true} />
+  return (
+    <section className="saved-movies">
       <SearchForm />
       <MoviesCardList />
       <Footer />
     </section>
-       
-    )
-
+  );
 }
 
 export default SavedMovies;

@@ -11,7 +11,7 @@ const checkResponse = (res) => {
   return Promise.reject(`Упс...Ошибка: ${res.status}`);
 };
 
-export const getMovies = () => {
+export const getAllMovies = () => {
   return fetch(BASE_URL, {
     method: "GET",
     headers: jsonHeaders,

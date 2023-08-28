@@ -1,13 +1,14 @@
+import React, { useContext } from "react";
 import "./Profile.css";
-import Header from "../Header/Header";
 import { Link } from "react-router-dom";
+import { CurrentUserContext } from "../../context/CurrentUserContext";
 
-function Profile() {
+function Profile({ onSignOut }) {
+  const currentUser = useContext(CurrentUserContext);
   return (
     <>
-      <Header isAuth={true} />
       <section className="profile">
-        <h2 className="profile__header">Привет, Виталий!</h2>
+        <h2 className="profile__header">Привет, {currentUser.name}!</h2>
         <form className="profile__form" noValidate>
           <div className="profile__input-wrapper">
             <label htmlFor="name" className="profile__label">
@@ -21,7 +22,7 @@ function Profile() {
               type="name"
               minLength="2"
               maxLength="30"
-              defaultValue={"Виталий" || ""}
+              defaultValue={currentUser.name}
               required
             />
           </div>
@@ -39,7 +40,7 @@ function Profile() {
               type="email"
               minLength="2"
               maxLength="30"
-              defaultValue={"pochta@yandex.ru" || ""}
+              defaultValue={currentUser.email}
               required
             />
           </div>
@@ -49,7 +50,7 @@ function Profile() {
         <button type="button" className="profile__register">
           Редактировать
         </button>
-        <Link to="/signin" className="profile__exit">
+        <Link to="/" className="profile__exit" onClick={onSignOut}>
           Выйти из аккаунта
         </Link>
       </section>

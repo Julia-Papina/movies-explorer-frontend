@@ -93,7 +93,7 @@ function App() {
           pathname === "/profile" ? (
             <Header isLoggedIn={isLoggedIn} />
           ) : null}
-          <main className="main">
+          <main className="content">
             <Routes>
               <Route path="/" element={<Main />} />
               <Route

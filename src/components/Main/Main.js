@@ -9,14 +9,12 @@ import Footer from "../Footer/Footer";
 function Main(props) {
   return (
     <>
-      <main className="main">
         <Promo />
         <AboutProject />
         <Techs />
         <AboutMe />
         <Portfolio />
-      </main>
-      <Footer />
+        <Footer />
     </>
   );
 }

@@ -1,4 +1,4 @@
-import SearchForm from "../SearchForm/SearchForm";
+// import SearchForm from "../SearchForm/SearchForm";
 // import MoviesCardList from "../MoviesCardList/MoviesCardList";
 
 import Footer from "../Footer/Footer";
@@ -6,7 +6,6 @@ import Footer from "../Footer/Footer";
 function SavedMovies() {
   return (
     <section className="saved-movies">
-      <SearchForm />
      
       <Footer />
     </section>
@@ -14,5 +13,5 @@ function SavedMovies() {
 }
 
 export default SavedMovies;
-
+// <SearchForm />
 // <MoviesCardList /> 

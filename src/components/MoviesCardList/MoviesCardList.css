@@ -19,6 +19,26 @@
   margin: 60px auto 80px auto;
 }
 
+.loading-button {
+  width: 100%;
+  background: #2f2f2f;
+  font-size: 12px;
+  font-style: normal;
+  color: #fff;
+  text-align: center;
+  font-weight: 500;
+  line-height: normal;
+  border-radius: 6px; 
+  border: none;
+  box-sizing: border-box;
+  padding: 10px 0;  
+  cursor: pointer;
+}
+
+.loading-button:hover {
+  opacity: 0.8;
+}
+
 @media screen and (max-width: 768px) {
   .movies-card-list__container {
     padding: 0 30px;

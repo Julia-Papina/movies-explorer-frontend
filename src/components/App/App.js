@@ -36,15 +36,15 @@ function App() {
           console.log(err);
         });
     }
-    
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function onRegister(email, password, name) {
     auth
       .register(email, password, name)
       .then(() => {
-        onLogin(email, password)
+        onLogin(email, password);
       })
       .catch((err) => {
         alert(`Возникла ошибка ${err}`);
@@ -64,7 +64,6 @@ function App() {
       });
   }
 
-
   useEffect(() => {
     if (isLoggedIn) {
       api
@@ -78,12 +77,16 @@ function App() {
     setIsLoggedIn(false);
     navigate("/");
     localStorage.removeItem("userId");
+    localStorage.removeItem("moviesArray");
+    localStorage.removeItem("shortMovies");
+    localStorage.removeItem("query");
+    localStorage.removeItem("isChecked");
   }
 
   const movies = isLoggedIn ? <Movies /> : <Main />;
   const savedMovies = isLoggedIn ? <SavedMovies /> : <Main />;
   const profile = isLoggedIn ? <Profile onSignOut={onSignOut} /> : null;
- 
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="App">
@@ -97,12 +100,18 @@ function App() {
           <main className="content">
             <Routes>
               <Route path="/" element={<Main />} />
-              <Route path="/signup" element={<Register onRegister={onRegister} />} />
+              <Route
+                path="/signup"
+                element={<Register onRegister={onRegister} />}
+              />
               <Route path="/signin" element={<Login onLogin={onLogin} />} />
               <Route path="/movies" element={movies} />
               <Route path="/saved-movies" element={savedMovies} />
               <Route path="/profile" element={profile} />
-              <Route path="*" element={<PageNotFound isLoggedIn={isLoggedIn} />} />
+              <Route
+                path="*"
+                element={<PageNotFound isLoggedIn={isLoggedIn} />}
+              />
             </Routes>
           </main>
         </div>

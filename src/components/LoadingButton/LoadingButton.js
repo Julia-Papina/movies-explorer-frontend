@@ -1,6 +1,6 @@
 import './LoadingButton.css';
 
-function LoadingButton(props) {
+function LoadingButton() {
   return <button className="loading-button">Ещё</button>;
 }
 

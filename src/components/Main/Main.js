@@ -9,12 +9,13 @@ import Footer from "../Footer/Footer";
 function Main(props) {
   return (
     <>
-        <Promo />
-        <AboutProject />
-        <Techs />
-        <AboutMe />
-        <Portfolio />
-        <Footer />
+      <Promo />
+      <AboutProject />
+      <Techs />
+      <AboutMe />
+      <Portfolio />
+
+      <Footer />
     </>
   );
 }

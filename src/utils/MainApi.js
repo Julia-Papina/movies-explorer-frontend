@@ -60,11 +60,16 @@ class Api {
         nameRU: movie.nameRU,
         nameEN: movie.nameEN,
       }),
-    }).then(this._checkResponse);
+    })
+      .then(this._checkResponse)
+      .then((savedMovie) => {
+        movie._id = savedMovie._id;
+        return savedMovie;
+      });
   }
 
-  deleteCard(id) {
-    return fetch(`${this._baseUrl}/cards/${id}`, {
+  deleteMovie(id) {
+    return fetch(`${this._baseUrl}/movies/${id}`, {
       method: "DELETE",
       credentials: "include",
       headers: this._headers,

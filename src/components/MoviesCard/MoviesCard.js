@@ -1,29 +1,55 @@
-// import React, { useState } from "react";
+import React, { useState } from "react";
 import "./MoviesCard.css";
 import { timeConverter } from "../../utils/timeConverter";
 import { BASE_IMG_LINK } from "../../utils/constants";
 import { Link } from "react-router-dom";
+import api from "../../utils/MainApi";
 
 function MoviesCard({ pathname, movie }) {
+  const [isLiked, setLike] = useState(false);
 
-  const buttontElement =
-  pathname === "/saved-movies" ? (
-    <button type="button" className="movies-card__button">
-      &#215;
+  function handleSaveMovie() {
+    api
+      .saveMovie(movie)
+      .then((savedMovie) => {
+        setLike(true);
+        movie._id = savedMovie._id;
+      })
+      .catch((err) => console.log(`Возникла ошибка ${err}`));
+  }
+
+  function handleRemoveMovie() {
+    api
+      .deleteMovie(movie._id)
+      .then(() => {
+        setLike(false);
+      })
+      .catch((err) => console.log(`Возникла ошибка ${err}`));
+  }
+
+  const buttontElement = isLiked ? (
+    // pathname === "/saved-movies" ? (
+    //  <button type="button" className="movies-card__button">
+    //   &#215;
+    //  </button>
+    // ) :
+    // pathname === "/movies" ? (
+    <button
+      type="submit"
+      className="movies-card__button movies-card__button_typ_save"
+      onClick={handleRemoveMovie}
+    >
+      &#10003;
     </button>
-  ) :
- pathname === "/movies" ? (
-      <button
-        type="submit"
-        className="movies-card__button movies-card__button_typ_save"
-      >
-        &#10003;
-      </button>
-    ) : (
-      <button type="submit" className="movies-card__button" >
-        Сохранить
-      </button>
-    );
+  ) : (
+    <button
+      type="submit"
+      className="movies-card__button"
+      onClick={handleSaveMovie}
+    >
+      Сохранить
+    </button>
+  );
 
   return (
     <article className="movies-card">

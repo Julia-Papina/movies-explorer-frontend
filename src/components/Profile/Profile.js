@@ -81,7 +81,7 @@ function Profile({ onSignOut, onUpdateProfile, serverError, isOkRequest }) {
             {isOkRequest ? (
               <span
                 className={`profile__success-message ${
-                  showSuccessMessage ? "" : "profile__success-text_disabled"
+                  showSuccessMessage ? "" : "profile__success-message_disabled"
                 }`}
               >
                 Обновление данных прошло успешно!

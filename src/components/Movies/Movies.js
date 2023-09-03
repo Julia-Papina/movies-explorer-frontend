@@ -2,13 +2,13 @@ import { useState, useEffect } from "react";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import SearchForm from "../SearchForm/SearchForm";
 import Footer from "../Footer/Footer";
-import * as moviesApi from "../../utils/MoviesApi";
+//import * as moviesApi from "../../utils/MoviesApi";
 
-function Movies() {
-  const [moviesArray, setMoviesArray] = useState([]);
+function Movies({ isLoading, moviesArray }) {
+  //const [moviesArray, setMoviesArray] = useState([]);
   const [filteredMovies, setFilteredMovies] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [isLoading, setLoading] = useState(true);
+  // const [isLoading, setLoading] = useState(true);
   const [isChecked, setIsChecked] = useState(false);
   const [validationMessage, setValidationMessage] = useState("");
   const [displayListMovies, setDisplayListMovies] = useState(12);
@@ -58,18 +58,18 @@ function Movies() {
   }, []);
 
   //загрузка всех фильмов
-  useEffect(() => {
-    moviesApi
-      .getAllMovies()
-      .then((data) => {
-        setLoading(false);
-        setMoviesArray(data);
-      })
-      .catch((err) => {
-        setLoading(false);
-        alert(`Возникла ошибка ${err}`);
-      });
-  }, []);
+  // useEffect(() => {
+  //  moviesApi
+  //    .getAllMovies()
+  //   .then((data) => {
+  //     setLoading(false);
+  //     setMoviesArray(data);
+  //   })
+  //   .catch((err) => {
+  //     setLoading(false);
+  //     alert(`Возникла ошибка ${err}`);
+  //   });
+  // }, []);
 
   function updateDisplayCards() {
     const screenWidth = window.innerWidth;

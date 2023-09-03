@@ -14,12 +14,17 @@ import Profile from "../Profile/Profile";
 import PageNotFound from "../PageNotFound/PageNotFound";
 import * as auth from "../../utils/auth";
 import api from "../../utils/MainApi";
+import * as moviesApi from "../../utils/MoviesApi";
 
 function App() {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const [currentUser, setCurrentUser] = useState({});
+  const [moviesArray, setMoviesArray] = useState([]);
+  const [isLoading, setLoading] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [serverError, setServerError] = useState({});
+  const [isOkRequest, setIsOkRequest] = useState(false);
 
   useEffect(() => {
     const jwt = localStorage.getItem("userId");
@@ -64,13 +69,27 @@ function App() {
       });
   }
 
+  // useEffect(() => {
+  //  if (isLoggedIn) {
+  //    api
+  //      .getProfile()
+  //      .then((profileUserInfo) => setCurrentUser(profileUserInfo))
+  //      .catch((err) => alert(`Возникла ошибка ${err}`));
+  //  }
+  // }, [isLoggedIn]);
+
   useEffect(() => {
-    if (isLoggedIn) {
-      api
-        .getProfile()
-        .then((profileUserInfo) => setCurrentUser(profileUserInfo))
-        .catch((err) => alert(`Возникла ошибка ${err}`));
-    }
+    isLoggedIn &&
+      Promise.all([api.getProfile(), moviesApi.getAllMovies()])
+        .then(([profileUserInfo, data]) => {
+          setCurrentUser(profileUserInfo);
+          setLoading(false);
+          setMoviesArray(data);
+        })
+        .catch((err) => {
+          setLoading(false);
+          console.error(`Ошибка: ${err}`);
+        });
   }, [isLoggedIn]);
 
   function onSignOut() {
@@ -83,9 +102,34 @@ function App() {
     localStorage.removeItem("isChecked");
   }
 
-  const movies = isLoggedIn ? <Movies /> : <Main />;
+  // Обновление данных пользователя
+  function onUpdateUser(data) {
+    api
+      .editProfile(data)
+      .then((data) => {
+        setCurrentUser(data);
+        setIsOkRequest(true);
+      })
+      .catch((err) => {
+        console.error(`${err}`);
+        setServerError(err);
+        setIsOkRequest(false);
+      });
+  }
+
+  const movies = isLoggedIn ? (
+    <Movies isLoading={isLoading} moviesArray={moviesArray} />
+  ) : (
+    <Main />
+  );
   const savedMovies = isLoggedIn ? <SavedMovies /> : <Main />;
-  const profile = isLoggedIn ? <Profile onSignOut={onSignOut} /> : null;
+  const profile = isLoggedIn ? (
+    <Profile
+      onSignOut={onSignOut}
+      onUpdateProfile={onUpdateUser}
+      isOkRequest={isOkRequest}
+    />
+  ) : null;
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -102,7 +146,9 @@ function App() {
               <Route path="/" element={<Main />} />
               <Route
                 path="/signup"
-                element={<Register onRegister={onRegister} />}
+                element={
+                  <Register onRegister={onRegister} serverError={serverError} />
+                }
               />
               <Route path="/signin" element={<Login onLogin={onLogin} />} />
               <Route path="/movies" element={movies} />

@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import "./SearchForm.css";
 import FilterCheckbox from "../FilterCheckbox/FilterCheckbox";
 
@@ -5,13 +6,18 @@ function SearchForm({
   searchQuery,
   handleSearchChange,
   onSearchClick,
-  isChecked,
-  validationMessage,
+  onToggleLike,
   defaultValue,
-  checkboxChange,
+  isChecked,
 }) {
+  const [validationMessage, setValidationMessage] = useState("");
   const handleSubmit = (evt) => {
     evt.preventDefault();
+    if (searchQuery.slice(1, -1) === "") {
+      setValidationMessage("Нужно ввести ключевое слово");
+      return;
+    }
+    setValidationMessage("");
     onSearchClick();
   };
 
@@ -25,23 +31,25 @@ function SearchForm({
               id="search-input"
               placeholder="Фильм"
               className="search-form__input"
-              required
               defaultValue={defaultValue}
-              value={searchQuery}
               onChange={handleSearchChange}
               autoComplete="off"
+              // value={searchQuery}
+              // required
             />
             <button className="search-form__button" type="submit">
               Поиск
             </button>
           </fieldset>
           {validationMessage && (
-            <span className="searchform__validation">{validationMessage}</span>
+            <span className="search-form__validation">
+              Нужно ввести ключевое слово
+            </span>
           )}
           <FilterCheckbox
             text={"Короткометражки"}
-            isChecked={isChecked} 
-            checkboxChange={checkboxChange}
+            onToggleLike={onToggleLike}
+            isChecked={isChecked}
           />
         </form>
       </div>

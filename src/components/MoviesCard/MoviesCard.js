@@ -1,43 +1,76 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import "./MoviesCard.css";
 import { timeConverter } from "../../utils/timeConverter";
 import { BASE_IMG_LINK } from "../../utils/constants";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import api from "../../utils/MainApi";
+import { MoviesUserContext } from "../../context/MoviesUserContext";
 
-function MoviesCard({ pathname, movie }) {
-  const [isLiked, setLike] = useState(false);
+function MoviesCard({ movie }) {
+  const [isLiked, setIsLike] = useState(false);
+  const { userMoviesSaved, setUserMoviesSaved } = useContext(MoviesUserContext);
+  const { pathname } = useLocation();
 
+  useEffect(() => {
+    setIsLike(
+      userMoviesSaved.some((userMovie) => userMovie.nameRU === movie.nameRU)
+    );
+  }, [userMoviesSaved, movie.nameRU]);
+
+  // Сохранить фильм
   function handleSaveMovie() {
     api
       .saveMovie(movie)
-      .then((savedMovie) => {
-        setLike(true);
-        movie._id = savedMovie._id;
+      .then(() => {
+        setIsLike(true);
+        setUserMoviesSaved([...userMoviesSaved, movie]);
       })
       .catch((err) => console.log(`Возникла ошибка ${err}`));
   }
 
+  function toggleButtonSave() {
+    const isMovieSaved = userMoviesSaved.some(
+      (userMovie) => userMovie.nameRU === movie.nameRU
+    );
+    if (!isMovieSaved) {
+      handleSaveMovie();
+    } else {
+      // использую id сохраненного фильма для удаления
+      const savedMovie = userMoviesSaved.find(
+        (userMovie) => userMovie.nameRU === movie.nameRU
+      );
+      if (savedMovie) {
+        api
+          .deleteMovie(savedMovie._id)
+          .then(() => {
+            setUserMoviesSaved(
+              userMoviesSaved.filter((userMovie) => userMovie._id !== savedMovie._id)
+            );
+            setIsLike(false);
+          })
+          .catch((err) => console.log(`Возникла ошибка ${err}`));
+      }
+    }
+  }
+
+  // удалить фильм
   function handleRemoveMovie() {
     api
       .deleteMovie(movie._id)
       .then(() => {
-        setLike(false);
+        setIsLike(false);
+        setUserMoviesSaved(
+          userMoviesSaved.filter((userMovie) => userMovie._id !== movie._id)
+        );
       })
       .catch((err) => console.log(`Возникла ошибка ${err}`));
   }
 
   const buttontElement = isLiked ? (
-    // pathname === "/saved-movies" ? (
-    //  <button type="button" className="movies-card__button">
-    //   &#215;
-    //  </button>
-    // ) :
-    // pathname === "/movies" ? (
     <button
       type="submit"
       className="movies-card__button movies-card__button_typ_save"
-      onClick={handleRemoveMovie}
+      onClick={toggleButtonSave}
     >
       &#10003;
     </button>
@@ -45,12 +78,11 @@ function MoviesCard({ pathname, movie }) {
     <button
       type="submit"
       className="movies-card__button"
-      onClick={handleSaveMovie}
+      onClick={toggleButtonSave}
     >
       Сохранить
     </button>
   );
-
   return (
     <article className="movies-card">
       <div className="movies-card__about">
@@ -74,7 +106,16 @@ function MoviesCard({ pathname, movie }) {
           />
         </Link>
       </div>
-      {buttontElement}
+      {pathname === "/movies" ? buttontElement : null}
+      {pathname === "/saved-movies" ? (
+        <button
+          type="button"
+          className="movies-card__button"
+          onClick={handleRemoveMovie}
+        >
+          &#215;
+        </button>
+      ) : null}
     </article>
   );
 }

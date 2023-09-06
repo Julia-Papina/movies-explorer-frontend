@@ -2,74 +2,45 @@ import { useState, useEffect } from "react";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import SearchForm from "../SearchForm/SearchForm";
 import Footer from "../Footer/Footer";
-//import * as moviesApi from "../../utils/MoviesApi";
 
 function Movies({ isLoading, moviesArray }) {
-  //const [moviesArray, setMoviesArray] = useState([]);
   const [filteredMovies, setFilteredMovies] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-  // const [isLoading, setLoading] = useState(true);
   const [isChecked, setIsChecked] = useState(false);
-  const [validationMessage, setValidationMessage] = useState("");
   const [displayListMovies, setDisplayListMovies] = useState(12);
-
+ 
   const moviesList = filteredMovies.slice(0, displayListMovies);
 
-  // локальное хранилище всех фильмов
-  const localStorageMovies = JSON.parse(localStorage.getItem("moviesArray"));
-
-  // локальное хранище коротких фильмов
+  const localStorageMovies = JSON.parse(localStorage.getItem("moviesArray")); // локальное хранилище всех фильмов
   const localStorageShortMovies = JSON.parse(
     localStorage.getItem("shortMovies")
-  );
-
-  // локальное хранилище запроса
-  const localStorageSearchQuery = localStorage.getItem("query");
-
-  const slicedLocalStorageQuery = localStorageSearchQuery
-    ? localStorageSearchQuery.slice(1, -1)
-    : "";
-
+  ); // локальное хранище коротких фильмов
+  const localStorageSearchQuery = localStorage.getItem("query"); // локальное хранилище запроса
   const localStoragedIsChecked = localStorage.getItem("isChecked");
 
-  function handleLocalStorageData() {
-    if (localStorageMovies === null) {
-      return;
-    }
-
-    const restoredShortMovies =
-      localStorageShortMovies && localStoragedIsChecked;
-
-    if (restoredShortMovies) {
-      setFilteredMovies(localStorageShortMovies);
+  useEffect(() => {
+    if (localStoragedIsChecked) {
       setIsChecked(true);
     } else {
-      setFilteredMovies(localStorageMovies);
+      setIsChecked(false);
     }
-
-    setSearchQuery(localStorageSearchQuery);
-  }
-
-  // возвращаем предыдущий запрос если он был
+  }, [localStoragedIsChecked]);
 
   useEffect(() => {
     handleLocalStorageData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  //загрузка всех фильмов
-  // useEffect(() => {
-  //  moviesApi
-  //    .getAllMovies()
-  //   .then((data) => {
-  //     setLoading(false);
-  //     setMoviesArray(data);
-  //   })
-  //   .catch((err) => {
-  //     setLoading(false);
-  //     alert(`Возникла ошибка ${err}`);
-  //   });
-  // }, []);
+  function handleLocalStorageData() {
+    if (localStorageMovies === null) {
+      return;
+    }
+
+    localStorageShortMovies
+      ? setFilteredMovies(localStorageShortMovies)
+      : setFilteredMovies(localStorageMovies);
+    setSearchQuery(localStorageSearchQuery);
+  }
 
   function updateDisplayCards() {
     const screenWidth = window.innerWidth;
@@ -85,7 +56,6 @@ function Movies({ isLoading, moviesArray }) {
     }
   }
 
-  //изменение кол-ва карточек в зависимости от ширины экрана
   useEffect(() => {
     updateDisplayCards();
     window.addEventListener("resize", () => {
@@ -94,24 +64,16 @@ function Movies({ isLoading, moviesArray }) {
     return () => {
       window.removeEventListener("resize", updateDisplayCards);
     };
-  }, []);
+  }, []); //изменение кол-ва карточек в зависимости от ширины экрана
 
   // запрос формы
   function handleSearchSubmit() {
-    if (searchQuery === "") {
-      setValidationMessage("Нужно ввести ключевое слово");
-      return;
-    }
-
-    // поиск фильмов на основе запроса
-    setValidationMessage("");
     const filtered = moviesArray.filter((movie) => {
       return movie.nameRU
         .toLowerCase()
         .includes(searchQuery.toLowerCase().slice(1, -1));
     });
     setFilteredMovies(filtered);
-    // обновление localStorage при изменении filteredMovies
     localStorage.setItem("moviesArray", JSON.stringify(filtered));
   }
 
@@ -121,16 +83,15 @@ function Movies({ isLoading, moviesArray }) {
       const shortMovies = filteredMovies.filter((movie) => movie.duration < 60);
       setIsChecked(true);
       setFilteredMovies(shortMovies);
+      localStorage.setItem("isChecked", true);
       localStorage.setItem("shortMovies", JSON.stringify(shortMovies));
-      localStorage.setItem("isChecked", JSON.stringify(true));
     } else {
-      handleSearchSubmit();
       setIsChecked(false);
-      localStorage.removeItem("shortMovies");
+      setFilteredMovies(localStorageMovies);
       localStorage.removeItem("isChecked");
+      localStorage.removeItem("shortMovies");
     }
   }
-
   // записала значение в поиске
   const handleSearchChange = (evt) => {
     const value = evt.target.value;
@@ -151,16 +112,17 @@ function Movies({ isLoading, moviesArray }) {
         onSearchClick={handleSearchSubmit}
         handleSearchChange={handleSearchChange}
         setFilteredMovies={setFilteredMovies}
-        checkboxChange={handleCheckboxChange}
-        validationMessage={validationMessage}
-        defaultValue={slicedLocalStorageQuery}
+        onToggleLike={handleCheckboxChange}
+        defaultValue={localStorageSearchQuery}
         isChecked={isChecked}
+        searchQuery={searchQuery}
       />
       <MoviesCardList
         list={filteredMovies}
         isLoading={isLoading}
         handleClickButtonMore={handleClickButtonMore}
         moviesList={moviesList}
+        setFilteredMovies={setFilteredMovies}
       />
       <Footer />
     </section>

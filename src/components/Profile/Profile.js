@@ -92,8 +92,7 @@ function Profile({ onSignOut, onUpdateProfile, serverError, isOkRequest }) {
                   serverError ? "" : "profile__error-text_disabled"
                 }`}
               >
-                Произошла ошибка на стороне сервера. Пожалуйста, попробуйте ещё
-                раз.
+                При обновлении профиля произошла ошибка.
               </span>
             )}
 

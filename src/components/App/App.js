@@ -3,6 +3,7 @@ import "./App.css";
 
 import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import { CurrentUserContext } from "../../context/CurrentUserContext";
+import { MoviesUserContext } from "../../context/MoviesUserContext";
 import { useState, useEffect } from "react";
 import Main from "../Main/Main";
 import Movies from "../Movies/Movies";
@@ -25,6 +26,7 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [serverError, setServerError] = useState({});
   const [isOkRequest, setIsOkRequest] = useState(false);
+  const [userMoviesSaved, setUserMoviesSaved] = useState([]);
 
   useEffect(() => {
     const jwt = localStorage.getItem("userId");
@@ -41,7 +43,6 @@ function App() {
           console.log(err);
         });
     }
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -69,29 +70,21 @@ function App() {
       });
   }
 
-  // useEffect(() => {
-  //  if (isLoggedIn) {
-  //    api
-  //      .getProfile()
-  //      .then((profileUserInfo) => setCurrentUser(profileUserInfo))
-  //      .catch((err) => alert(`Возникла ошибка ${err}`));
-  //  }
-  // }, [isLoggedIn]);
-
   useEffect(() => {
     isLoggedIn &&
-      Promise.all([api.getProfile(), moviesApi.getAllMovies()])
-        .then(([profileUserInfo, data]) => {
+      Promise.all([api.getProfile(), moviesApi.getAllMovies(), api.getSavedMovies(),])
+        .then(([profileUserInfo, data, item]) => {
           setCurrentUser(profileUserInfo);
           setLoading(false);
           setMoviesArray(data);
+          setUserMoviesSaved(item);
         })
         .catch((err) => {
           setLoading(false);
           console.error(`Ошибка: ${err}`);
         });
   }, [isLoggedIn]);
-
+  //выход
   function onSignOut() {
     setIsLoggedIn(false);
     navigate("/");
@@ -101,7 +94,6 @@ function App() {
     localStorage.removeItem("query");
     localStorage.removeItem("isChecked");
   }
-
   // Обновление данных пользователя
   function onUpdateUser(data) {
     api
@@ -132,37 +124,42 @@ function App() {
   ) : null;
 
   return (
-    <CurrentUserContext.Provider value={currentUser}>
-      <div className="App">
-        <div className="page">
-          {pathname === "/" ||
-          pathname === "/movies" ||
-          pathname === "/saved-movies" ||
-          pathname === "/profile" ? (
-            <Header isLoggedIn={isLoggedIn} />
-          ) : null}
-          <main className="content">
-            <Routes>
-              <Route path="/" element={<Main />} />
-              <Route
-                path="/signup"
-                element={
-                  <Register onRegister={onRegister} serverError={serverError} />
-                }
-              />
-              <Route path="/signin" element={<Login onLogin={onLogin} />} />
-              <Route path="/movies" element={movies} />
-              <Route path="/saved-movies" element={savedMovies} />
-              <Route path="/profile" element={profile} />
-              <Route
-                path="*"
-                element={<PageNotFound isLoggedIn={isLoggedIn} />}
-              />
-            </Routes>
-          </main>
+    <MoviesUserContext.Provider value={{ userMoviesSaved, setUserMoviesSaved }}>
+      <CurrentUserContext.Provider value={currentUser}>
+        <div className="App">
+          <div className="page">
+            {pathname === "/" ||
+            pathname === "/movies" ||
+            pathname === "/saved-movies" ||
+            pathname === "/profile" ? (
+              <Header isLoggedIn={isLoggedIn} />
+            ) : null}
+            <main className="content">
+              <Routes>
+                <Route path="/" element={<Main />} />
+                <Route
+                  path="/signup"
+                  element={
+                    <Register
+                      onRegister={onRegister}
+                      serverError={serverError}
+                    />
+                  }
+                />
+                <Route path="/signin" element={<Login onLogin={onLogin} />} />
+                <Route path="/movies" element={movies} />
+                <Route path="/saved-movies" element={savedMovies} />
+                <Route path="/profile" element={profile} />
+                <Route
+                  path="*"
+                  element={<PageNotFound isLoggedIn={isLoggedIn} />}
+                />
+              </Routes>
+            </main>
+          </div>
         </div>
-      </div>
-    </CurrentUserContext.Provider>
+      </CurrentUserContext.Provider>
+    </MoviesUserContext.Provider>
   );
 }
 

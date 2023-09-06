@@ -39,6 +39,13 @@
   opacity: 0.8;
 }
 
+.movies-card-list__message {
+	margin: 0 auto;
+	max-width: 600px;
+	text-align: center;
+	line-height: 22px;
+}
+
 @media screen and (max-width: 768px) {
   .movies-card-list__container {
     padding: 0 30px;

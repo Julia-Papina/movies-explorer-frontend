@@ -56,6 +56,9 @@
   max-width: 396px;
   opacity: 0;
 }
+.register__form-error_active {
+  opacity: 1;
+}
 .register__form-input:focus {
   border-bottom-color: #4285f4;
   outline: none;

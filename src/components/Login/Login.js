@@ -1,23 +1,29 @@
 import "./Login.css";
 import logo from "../../images/logo.svg";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+// import { useState } from "react";
+import { useValidationForm } from "../../hooks/useValidationForm";
+import { validateEmail } from "../../utils/validator";
 
 function Login(props) {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const { values, handleChange, errors, isValid } = useValidationForm();
+  // const [email, setEmail] = useState("");
+  // const [password, setPassword] = useState("");
 
-  function handleInputEmail(e) {
-    setEmail(e.target.value);
-  }
+  // function handleInputEmail(e) {
+  //   setEmail(e.target.value);
+  // }
 
-  function handleInputPassword(e) {
-    setPassword(e.target.value);
-  }
+  // function handleInputPassword(e) {
+  //   setPassword(e.target.value);
+  // }
 
   function handleSubmit(e) {
     e.preventDefault();
-    props.onLogin(email, password);
+    if (!values.email || !values.password) {
+      return;
+    }
+    props.onLogin(values);
   }
   return (
     <section className="login">
@@ -39,9 +45,16 @@ function Login(props) {
               maxLength="30"
               required
               placeholder="pochta@yandex.ru"
-              value={email}
-              onChange={handleInputEmail}
+              value={values.email || ""}
+              onChange={handleChange}
             />
+            <span
+              className={`login__form-error ${
+                isValid ? "" : "login__form-error login__form-error_active"
+              }`}
+            >
+              {validateEmail(values.email).error}
+            </span>
           </label>
 
           <label className="login__form-label" htmlFor="password">
@@ -56,9 +69,16 @@ function Login(props) {
               maxLength="30"
               required
               placeholder="••••••••"
-              value={password}
-              onChange={handleInputPassword}
+              value={values.password || ""}
+              onChange={handleChange}
             />
+            <span
+              className={`login__form-error ${
+                isValid ? "" : "login__form-error login__form-error_active"
+              }`}
+            >
+              {errors.password}
+            </span>
           </label>
         </div>
         <div className="login__wrapper">

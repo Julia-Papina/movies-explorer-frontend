@@ -1,27 +1,30 @@
 import "./Register.css";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+//import { useState } from "react";
 import logo from "../../images/logo.svg";
+import { useValidationForm } from "../../hooks/useValidationForm";
+import { validateName, validateEmail } from "../../utils/validator";
 
 function Register(props) {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
+  // const [email, setEmail] = useState("");
+  // const [password, setPassword] = useState("");
+  // const [name, setName] = useState("");
+  const { values, errors, isValid, handleChange } = useValidationForm();
 
-  function handleInputEmail(e) {
-    setEmail(e.target.value);
-  }
+  //function handleInputEmail(e) {
+  //  setEmail(e.target.value);
+  //}
 
-  function handleInputPassword(e) {
-    setPassword(e.target.value);
-  }
+  // function handleInputPassword(e) {
+  //   setPassword(e.target.value);
+  // }
 
-  function handleInputName(e) {
-    setName(e.target.value);
-  }
+  // function handleInputName(e) {
+  //   setName(e.target.value);
+  // }
   function handleSubmit(e) {
     e.preventDefault();
-    props.onRegister(email, password, name);
+    props.onRegister(values);
   }
 
   return (
@@ -44,9 +47,18 @@ function Register(props) {
               maxLength="30"
               required
               placeholder="Виталий"
-              value={name}
-              onChange={handleInputName}
+              value={values.name || ""}
+              onChange={handleChange}
             />
+            <span
+              className={`register__form-error ${
+                isValid
+                  ? ""
+                  : "register__form-error register__form-error_active"
+              }`}
+            >
+              {validateName(values.name).error}
+            </span>
           </label>
 
           <label className="register__form-label" htmlFor="email">
@@ -61,9 +73,18 @@ function Register(props) {
               maxLength="30"
               required
               placeholder="pochta@yandex.ru"
-              value={email}
-              onChange={handleInputEmail}
+              value={values.email || ""}
+              onChange={handleChange}
             />
+            <span
+              className={`register__form-error ${
+                isValid
+                  ? ""
+                  : "register__form-error register__form-error_active"
+              }`}
+            >
+              {validateEmail(values.email).error}
+            </span>
           </label>
 
           <label className="register__form-label" htmlFor="password">
@@ -78,10 +99,18 @@ function Register(props) {
               maxLength="30"
               required
               placeholder="••••••••"
-              value={password}
-              onChange={handleInputPassword}
+              value={values.password}
+              onChange={handleChange}
             />
-            <span className="register__form-error">Что-то пошло не так...</span>
+            <span
+              className={`register__form-error ${
+                isValid
+                  ? ""
+                  : "register__form-error register__form-error_active"
+              }`}
+            >
+              {errors.password}
+            </span>
           </label>
         </div>
         <div className="register__wrapper">

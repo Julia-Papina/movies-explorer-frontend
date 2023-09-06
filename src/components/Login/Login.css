@@ -50,6 +50,22 @@
   outline: none;
 }
 
+.login__form-error {
+  font-family: inherit;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 10px;
+  line-height: normal;
+  color: #ee3465;
+  margin: 6px 0 4px 0;
+  display: block;
+  max-width: 396px;
+  opacity: 0;
+}
+.login__form-error_active {
+  opacity: 1;
+}
+
 .login__button {
   width: 100%;
   height: 45px;

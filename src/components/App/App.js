@@ -46,20 +46,20 @@ function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  function onRegister(email, password, name) {
+  function onRegister(values) {
     auth
-      .register(email, password, name)
+      .register(values.email, values.password, values.name)
       .then(() => {
-        onLogin(email, password);
+        onLogin(values);
       })
       .catch((err) => {
         alert(`Возникла ошибка ${err}`);
       });
   }
 
-  function onLogin(email, password) {
+  function onLogin(values) {
     auth
-      .login(email, password)
+      .login(values.email, values.password)
       .then((res) => {
         localStorage.setItem("userId", res._id);
         setIsLoggedIn(true);
@@ -72,7 +72,11 @@ function App() {
 
   useEffect(() => {
     isLoggedIn &&
-      Promise.all([api.getProfile(), moviesApi.getAllMovies(), api.getSavedMovies(),])
+      Promise.all([
+        api.getProfile(),
+        moviesApi.getAllMovies(),
+        api.getSavedMovies(),
+      ])
         .then(([profileUserInfo, data, item]) => {
           setCurrentUser(profileUserInfo);
           setLoading(false);

@@ -99,7 +99,7 @@ function Register(props) {
               maxLength="30"
               required
               placeholder="••••••••"
-              value={values.password}
+              value={values.password || ""}
               onChange={handleChange}
             />
             <span

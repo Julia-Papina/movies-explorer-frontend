@@ -16,6 +16,7 @@ import PageNotFound from "../PageNotFound/PageNotFound";
 import * as auth from "../../utils/auth";
 import api from "../../utils/MainApi";
 import * as moviesApi from "../../utils/MoviesApi";
+// import Preloader from "../Preloader/Preloader";
 
 function App() {
   const navigate = useNavigate();
@@ -36,7 +37,7 @@ function App() {
         .then((res) => {
           if (res) {
             setIsLoggedIn(true);
-            navigate("/movies");
+            navigate(pathname);
           }
         })
         .catch((err) => {
@@ -63,7 +64,7 @@ function App() {
       .then((res) => {
         localStorage.setItem("userId", res._id);
         setIsLoggedIn(true);
-        navigate("/movies");
+        navigate("/movies", { replace: true });
       })
       .catch((err) => {
         alert(`Возникла ошибка ${err}`);
@@ -88,6 +89,7 @@ function App() {
           console.error(`Ошибка: ${err}`);
         });
   }, [isLoggedIn]);
+
   //выход
   function onSignOut() {
     setIsLoggedIn(false);
@@ -128,9 +130,11 @@ function App() {
   ) : null;
 
   return (
-    <MoviesUserContext.Provider value={{ userMoviesSaved, setUserMoviesSaved }}>
-      <CurrentUserContext.Provider value={currentUser}>
-        <div className="App">
+    <div className="App">
+      <MoviesUserContext.Provider
+        value={{ userMoviesSaved, setUserMoviesSaved }}
+      >
+        <CurrentUserContext.Provider value={currentUser}>
           <div className="page">
             {pathname === "/" ||
             pathname === "/movies" ||
@@ -161,9 +165,9 @@ function App() {
               </Routes>
             </main>
           </div>
-        </div>
-      </CurrentUserContext.Provider>
-    </MoviesUserContext.Provider>
+        </CurrentUserContext.Provider>
+      </MoviesUserContext.Provider>
+    </div>
   );
 }
 

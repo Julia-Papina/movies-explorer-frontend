@@ -14,7 +14,7 @@ function MoviesCardList({ list, isLoading, handleClickButtonMore, moviesList }) 
           <div className="movies-card-list__elements">
             {moviesList.length > 0 ? (
               moviesList.map((movie) => {
-                return <MoviesCard key={movie.id} movie={movie} />;
+                return <MoviesCard key={movie.id || movie._id} movie={movie} list={list}/>;
               })
             ) : (
               <p className="movies-card-list__message">Ничего не найдено</p>

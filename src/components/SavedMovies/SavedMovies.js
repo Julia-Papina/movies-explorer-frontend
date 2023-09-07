@@ -2,14 +2,12 @@ import React, { useContext, useState } from "react";  //, useEffect
 import SearchForm from "../SearchForm/SearchForm";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import { MoviesUserContext } from "../../context/MoviesUserContext";
-// import api from "../../utils/MainApi";
-
 import Footer from "../Footer/Footer";
 
 function SavedMovies() {
-  const [query, setQuery] = useState("");
   const { userMoviesSaved, setUserMoviesSaved } = useContext(MoviesUserContext);
-
+  const [query, setQuery] = useState("");
+ 
   function handleSearchMoviesSaved() {
     const filtered = userMoviesSaved.filter((movie) => {
       return movie.nameRU.toLowerCase().includes(query.toLowerCase());

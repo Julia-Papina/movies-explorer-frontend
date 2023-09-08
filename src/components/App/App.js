@@ -16,6 +16,9 @@ import PageNotFound from "../PageNotFound/PageNotFound";
 import * as auth from "../../utils/auth";
 import api from "../../utils/MainApi";
 import * as moviesApi from "../../utils/MoviesApi";
+import InfoTooltip from "../InfoTooltip/InfoTooltip";
+import success from "../../images/success.svg";
+import reject from "../../images/reject.svg";
 
 function App() {
   const navigate = useNavigate();
@@ -28,7 +31,9 @@ function App() {
   const [isOkRequest, setIsOkRequest] = useState(false);
   const [userMoviesSaved, setUserMoviesSaved] = useState([]);
   const [isRequestError, setRequestError] = useState(false);
-
+  const [infoTooltip, setInfoTooltip] = useState(false);
+  const [popupTooltipImage, setPopupTooltipImage] = useState("");
+  const [popupTooltipTitle, setPopupTooltipTitle] = useState("");
   useEffect(() => {
     const jwt = localStorage.getItem("userId");
     if (jwt) {
@@ -51,11 +56,16 @@ function App() {
     auth
       .register(values.email, values.password, values.name)
       .then(() => {
+        setPopupTooltipImage(success);
+        setPopupTooltipTitle("Вы успешно зарегистрировались!");
         onLogin(values);
       })
       .catch((err) => {
-        alert(`Возникла ошибка ${err}`);
-      });
+        setPopupTooltipImage(reject);
+        setPopupTooltipTitle("Что-то пошло не так! Попробуйте ещё раз.");
+        //alert(`Возникла ошибка ${err}`);
+      })
+      .finally(handleInfoTooltip);
   }
 
   function onLogin(values) {
@@ -67,16 +77,16 @@ function App() {
         navigate("/movies", { replace: true });
       })
       .catch((err) => {
-        alert(`Возникла ошибка ${err}`);
+        setPopupTooltipImage(reject);
+        setPopupTooltipTitle("Что-то пошло не так! Попробуйте ещё раз.");
+        handleInfoTooltip();
+        //alert(`Возникла ошибка ${err}`);
       });
   }
 
   useEffect(() => {
     isLoggedIn &&
-      Promise.all([
-        api.getProfile(),
-        moviesApi.getAllMovies(),
-      ])
+      Promise.all([api.getProfile(), moviesApi.getAllMovies()])
         .then(([profileUserInfo, data, item]) => {
           setCurrentUser(profileUserInfo);
           setLoading(false);
@@ -117,6 +127,19 @@ function App() {
         setServerError(err);
         setIsOkRequest(false);
       });
+  }
+  function handleInfoTooltip() {
+    setInfoTooltip(true);
+  }
+
+  function closeAllPopups() {
+    setInfoTooltip(false);
+  }
+
+  function handlePopupCloseClick(evt) {
+    if (evt.target.classList.contains("popup_opened")) {
+      closeAllPopups();
+    }
   }
 
   const movies = isLoggedIn ? (
@@ -175,6 +198,13 @@ function App() {
                   element={<PageNotFound isLoggedIn={isLoggedIn} />}
                 />
               </Routes>
+              <InfoTooltip
+                image={popupTooltipImage}
+                title={popupTooltipTitle}
+                isOpen={infoTooltip}
+                onCloseClick={handlePopupCloseClick}
+                onClose={closeAllPopups}
+              />
             </main>
           </div>
         </CurrentUserContext.Provider>

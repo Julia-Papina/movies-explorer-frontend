@@ -17,7 +17,18 @@ function MoviesCard({ movie }) {
     );
   }, [userMoviesSaved, movie.nameRU]);
 
-  // Сохранить фильм
+  function toggleButtonSave() {
+    const savedMovie = userMoviesSaved.find(
+      (userMovie) => userMovie.nameRU === movie.nameRU
+    );
+    if (!savedMovie) {
+      handleSaveMovie();
+    } else {
+      handleRemoveMovie(savedMovie);
+    }
+  }
+
+  //Сохранить фильм
   function handleSaveMovie() {
     api
       .saveMovie(movie)
@@ -26,31 +37,6 @@ function MoviesCard({ movie }) {
         setUserMoviesSaved([...userMoviesSaved, movie]);
       })
       .catch((err) => console.log(`Возникла ошибка ${err}`));
-  }
-
-  function toggleButtonSave() {
-    const isMovieSaved = userMoviesSaved.some(
-      (userMovie) => userMovie.nameRU === movie.nameRU
-    );
-    if (!isMovieSaved) {
-      handleSaveMovie();
-    } else {
-      // использую id сохраненного фильма для удаления
-      const savedMovie = userMoviesSaved.find(
-        (userMovie) => userMovie.nameRU === movie.nameRU
-      );
-      if (savedMovie) {
-        api
-          .deleteMovie(savedMovie._id)
-          .then(() => {
-            setUserMoviesSaved(
-              userMoviesSaved.filter((userMovie) => userMovie._id !== savedMovie._id)
-            );
-            setIsLike(false);
-          })
-          .catch((err) => console.log(`Возникла ошибка ${err}`));
-      }
-    }
   }
 
   // удалить фильм

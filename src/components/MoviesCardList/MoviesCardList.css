@@ -44,6 +44,7 @@
 	max-width: 600px;
 	text-align: center;
 	line-height: 22px;
+  color:  #2be080;
 }
 
 @media screen and (max-width: 768px) {

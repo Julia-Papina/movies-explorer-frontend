@@ -11,15 +11,16 @@ function SearchForm({
   isChecked,
 }) {
   const [validationMessage, setValidationMessage] = useState("");
+
   const handleSubmit = (evt) => {
     evt.preventDefault();
-    if (searchQuery.slice(1, -1) === "") {
+    if (searchQuery === "") {
       setValidationMessage("Нужно ввести ключевое слово");
       return;
     }
     setValidationMessage("");
     onSearchClick();
-  };
+  }
 
   return (
     <section className="search-form">
@@ -34,8 +35,6 @@ function SearchForm({
               defaultValue={defaultValue}
               onChange={handleSearchChange}
               autoComplete="off"
-              // value={searchQuery}
-              // required
             />
             <button className="search-form__button" type="submit">
               Поиск

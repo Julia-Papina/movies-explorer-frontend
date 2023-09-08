@@ -16,7 +16,6 @@ import PageNotFound from "../PageNotFound/PageNotFound";
 import * as auth from "../../utils/auth";
 import api from "../../utils/MainApi";
 import * as moviesApi from "../../utils/MoviesApi";
-// import Preloader from "../Preloader/Preloader";
 
 function App() {
   const navigate = useNavigate();
@@ -28,6 +27,7 @@ function App() {
   const [serverError, setServerError] = useState({});
   const [isOkRequest, setIsOkRequest] = useState(false);
   const [userMoviesSaved, setUserMoviesSaved] = useState([]);
+  const [isRequestError, setRequestError] = useState(false);
 
   useEffect(() => {
     const jwt = localStorage.getItem("userId");
@@ -76,29 +76,33 @@ function App() {
       Promise.all([
         api.getProfile(),
         moviesApi.getAllMovies(),
-        api.getSavedMovies(),
       ])
         .then(([profileUserInfo, data, item]) => {
           setCurrentUser(profileUserInfo);
           setLoading(false);
           setMoviesArray(data);
-          setUserMoviesSaved(item);
         })
         .catch((err) => {
           setLoading(false);
-          console.error(`Ошибка: ${err}`);
+          setRequestError(true);
         });
   }, [isLoggedIn]);
 
+  function getSavedMovies() {
+    api
+      .getSavedMovies()
+      .then((data) => {
+        setUserMoviesSaved(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
   //выход
   function onSignOut() {
     setIsLoggedIn(false);
     navigate("/");
-    localStorage.removeItem("userId");
-    localStorage.removeItem("moviesArray");
-    localStorage.removeItem("shortMovies");
-    localStorage.removeItem("query");
-    localStorage.removeItem("isChecked");
+    localStorage.clear();
   }
   // Обновление данных пользователя
   function onUpdateUser(data) {
@@ -116,11 +120,19 @@ function App() {
   }
 
   const movies = isLoggedIn ? (
-    <Movies isLoading={isLoading} moviesArray={moviesArray} />
+    <Movies
+      isLoading={isLoading}
+      moviesArray={moviesArray}
+      isRequestError={isRequestError}
+    />
   ) : (
     <Main />
   );
-  const savedMovies = isLoggedIn ? <SavedMovies /> : <Main />;
+  const savedMovies = isLoggedIn ? (
+    <SavedMovies getSavedMovies={getSavedMovies} />
+  ) : (
+    <Main />
+  );
   const profile = isLoggedIn ? (
     <Profile
       onSignOut={onSignOut}

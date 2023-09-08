@@ -1,21 +1,20 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect } from "react"; 
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import SearchForm from "../SearchForm/SearchForm";
 import Footer from "../Footer/Footer";
 
-function Movies({ isLoading, moviesArray }) {
+function Movies({ isLoading, moviesArray, isRequestError }) {
   const [filteredMovies, setFilteredMovies] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [isChecked, setIsChecked] = useState(false);
   const [displayListMovies, setDisplayListMovies] = useState(12);
- 
   const moviesList = filteredMovies.slice(0, displayListMovies);
-
   const localStorageMovies = JSON.parse(localStorage.getItem("moviesArray")); // локальное хранилище всех фильмов
   const localStorageShortMovies = JSON.parse(
     localStorage.getItem("shortMovies")
   ); // локальное хранище коротких фильмов
   const localStorageSearchQuery = localStorage.getItem("query"); // локальное хранилище запроса
+  const queryCorrected  = localStorageSearchQuery ? localStorageSearchQuery.slice(1, -1) : '';
   const localStoragedIsChecked = localStorage.getItem("isChecked");
 
   useEffect(() => {
@@ -28,7 +27,7 @@ function Movies({ isLoading, moviesArray }) {
 
   useEffect(() => {
     handleLocalStorageData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function handleLocalStorageData() {
@@ -39,7 +38,8 @@ function Movies({ isLoading, moviesArray }) {
     localStorageShortMovies
       ? setFilteredMovies(localStorageShortMovies)
       : setFilteredMovies(localStorageMovies);
-    setSearchQuery(localStorageSearchQuery);
+
+    setSearchQuery(queryCorrected);
   }
 
   function updateDisplayCards() {
@@ -69,18 +69,22 @@ function Movies({ isLoading, moviesArray }) {
   // запрос формы
   function handleSearchSubmit() {
     const filtered = moviesArray.filter((movie) => {
-      return movie.nameRU
+      const movieName = movie.nameRU || movie.nameEN;
+      return movieName
         .toLowerCase()
         .includes(searchQuery.toLowerCase().slice(1, -1));
     });
     setFilteredMovies(filtered);
     localStorage.setItem("moviesArray", JSON.stringify(filtered));
   }
-
+  //фильтрация короткометражек
+  function filterShortMovies() {
+    return filteredMovies.filter((movie) => movie.duration < 60);
+  }
   // переключатель короткометражек
   function handleCheckboxChange() {
     if (isChecked === false) {
-      const shortMovies = filteredMovies.filter((movie) => movie.duration < 60);
+      const shortMovies = filterShortMovies();
       setIsChecked(true);
       setFilteredMovies(shortMovies);
       localStorage.setItem("isChecked", true);
@@ -113,7 +117,7 @@ function Movies({ isLoading, moviesArray }) {
         handleSearchChange={handleSearchChange}
         setFilteredMovies={setFilteredMovies}
         onToggleLike={handleCheckboxChange}
-        defaultValue={localStorageSearchQuery}
+        defaultValue={queryCorrected}
         isChecked={isChecked}
         searchQuery={searchQuery}
       />
@@ -123,6 +127,7 @@ function Movies({ isLoading, moviesArray }) {
         handleClickButtonMore={handleClickButtonMore}
         moviesList={moviesList}
         setFilteredMovies={setFilteredMovies}
+        isRequestError={isRequestError}
       />
       <Footer />
     </section>

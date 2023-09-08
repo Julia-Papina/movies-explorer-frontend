@@ -5,7 +5,7 @@ function PageNotFound({ isLoggedIn }) {
   const navigate = useNavigate();
 
   const handleBack = () => {
-    isLoggedIn ? navigate(-1) : navigate('/');
+    isLoggedIn ? navigate(-2) : navigate('/');
   };
 
   return (

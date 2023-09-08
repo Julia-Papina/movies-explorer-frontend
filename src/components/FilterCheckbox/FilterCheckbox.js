@@ -8,8 +8,7 @@ function FilterCheckbox({ text, onToggleLike, isChecked }) {
         className="filter-checkbox__input"
         type="checkbox"
         checked={isChecked}
-        onChange={() => {}}
-        onClick={onToggleLike}
+        onChange={onToggleLike}
       />
       <span className="filter-checkbox__span"></span>
       <span className="filter-checkbox__text">{text}</span>

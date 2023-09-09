@@ -1,27 +1,13 @@
 import "./Register.css";
 import { Link } from "react-router-dom";
-//import { useState } from "react";
+
 import logo from "../../images/logo.svg";
 import { useValidationForm } from "../../hooks/useValidationForm";
 import { validateName, validateEmail } from "../../utils/validator";
 
 function Register(props) {
-  // const [email, setEmail] = useState("");
-  // const [password, setPassword] = useState("");
-  // const [name, setName] = useState("");
   const { values, errors, isValid, handleChange } = useValidationForm();
 
-  //function handleInputEmail(e) {
-  //  setEmail(e.target.value);
-  //}
-
-  // function handleInputPassword(e) {
-  //   setPassword(e.target.value);
-  // }
-
-  // function handleInputName(e) {
-  //   setName(e.target.value);
-  // }
   function handleSubmit(e) {
     e.preventDefault();
     props.onRegister(values);
@@ -95,7 +81,7 @@ function Register(props) {
               name="password"
               id="password"
               autoComplete="off"
-              minLength="2"
+              minLength="5"
               maxLength="30"
               required
               placeholder="••••••••"
@@ -114,7 +100,13 @@ function Register(props) {
           </label>
         </div>
         <div className="register__wrapper">
-          <button type="submit" className="register__button">
+          <button type="submit" className={`register__button ${
+              isValid &&
+              validateEmail(values.email).activeButton &&
+              validateName(values.name).activeButton
+                ? ''
+                : 'register__button_disabled'
+            }`}>
             Зарегистрироваться
           </button>
           <p className="register__question">

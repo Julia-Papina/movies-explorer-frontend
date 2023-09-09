@@ -1,23 +1,11 @@
 import "./Login.css";
 import logo from "../../images/logo.svg";
 import { Link } from "react-router-dom";
-// import { useState } from "react";
 import { useValidationForm } from "../../hooks/useValidationForm";
 import { validateEmail } from "../../utils/validator";
 
 function Login(props) {
   const { values, handleChange, errors, isValid } = useValidationForm();
-  // const [email, setEmail] = useState("");
-  // const [password, setPassword] = useState("");
-
-  // function handleInputEmail(e) {
-  //   setEmail(e.target.value);
-  // }
-
-  // function handleInputPassword(e) {
-  //   setPassword(e.target.value);
-  // }
-
   function handleSubmit(e) {
     e.preventDefault();
     if (!values.email || !values.password) {
@@ -65,7 +53,7 @@ function Login(props) {
               name="password"
               id="password"
               autoComplete="off"
-              minLength="2"
+              minLength="5"
               maxLength="30"
               required
               placeholder="••••••••"
@@ -82,7 +70,11 @@ function Login(props) {
           </label>
         </div>
         <div className="login__wrapper">
-          <button type="submit" className="login__button">
+          <button type="submit" className={`login__button ${
+              isValid && validateEmail(values.email).activeButton
+                ? ''
+                : 'login__button_disabled'
+            }`}>
             Войти
           </button>
           <p className="login__question">

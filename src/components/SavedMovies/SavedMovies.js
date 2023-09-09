@@ -9,10 +9,11 @@ function SavedMovies({ getSavedMovies }) {
   const [query, setQuery] = useState("");
   const [filteredUserMovies, setFilteredUserMovies] = useState([]);
   const [isChecked, setIsChecked] = useState(false);
+  const localStorageMovies = JSON.parse(localStorage.getItem("savedMovies"));
 
   useEffect(() => {
     getSavedMovies();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -32,8 +33,6 @@ function SavedMovies({ getSavedMovies }) {
     setQuery(value);
   };
 
-  const localStorageMovies = JSON.parse(localStorage.getItem("userMovies"));
-
   function handleCheckboxChange() {
     if (isChecked === false) {
       const shortMovies = userMoviesSaved.filter(
@@ -41,11 +40,11 @@ function SavedMovies({ getSavedMovies }) {
       );
       setIsChecked(true);
       setUserMoviesSaved(shortMovies);
-      localStorage.setItem("userMovies", JSON.stringify(userMoviesSaved));
+      localStorage.setItem("savedMovies", JSON.stringify(userMoviesSaved));
     } else {
       setIsChecked(false);
       setUserMoviesSaved(localStorageMovies);
-      localStorage.removeItem("userMovies");
+      localStorage.removeItem("savedMovies");
     }
   }
 

@@ -4,7 +4,7 @@ import SearchForm from "../SearchForm/SearchForm";
 import Footer from "../Footer/Footer";
 
 function Movies({ isLoading, moviesArray, isRequestError }) {
-  const [filteredMovies, setFilteredMovies] = useState([]);
+  const [filteredMovies, setFilteredMovies] = useState([] || "");
   const [searchQuery, setSearchQuery] = useState("");
   const [isChecked, setIsChecked] = useState(false);
   const [displayListMovies, setDisplayListMovies] = useState(12);

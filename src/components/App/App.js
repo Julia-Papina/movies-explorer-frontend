@@ -19,6 +19,7 @@ import * as moviesApi from "../../utils/MoviesApi";
 import InfoTooltip from "../InfoTooltip/InfoTooltip";
 import success from "../../images/success.svg";
 import reject from "../../images/reject.svg";
+import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 
 function App() {
   const navigate = useNavigate();
@@ -34,6 +35,7 @@ function App() {
   const [infoTooltip, setInfoTooltip] = useState(false);
   const [popupTooltipImage, setPopupTooltipImage] = useState("");
   const [popupTooltipTitle, setPopupTooltipTitle] = useState("");
+  const handleError = (err) => console.error(`Возникла ошибка ${err}`);
   useEffect(() => {
     const jwt = localStorage.getItem("userId");
     if (jwt) {
@@ -45,9 +47,7 @@ function App() {
             navigate(pathname);
           }
         })
-        .catch((err) => {
-          console.log(err);
-        });
+        .catch(handleError);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -64,6 +64,7 @@ function App() {
         setPopupTooltipImage(reject);
         setPopupTooltipTitle("Что-то пошло не так! Попробуйте ещё раз.");
         //alert(`Возникла ошибка ${err}`);
+        handleError(err);
       })
       .finally(handleInfoTooltip);
   }
@@ -78,9 +79,12 @@ function App() {
       })
       .catch((err) => {
         setPopupTooltipImage(reject);
-        setPopupTooltipTitle("Что-то пошло не так! Попробуйте ещё раз.");
+        setPopupTooltipTitle(
+          "Ошибка авторизации. Неправильная почта или пароль. Попробуйте еще раз!"
+        );
         handleInfoTooltip();
         //alert(`Возникла ошибка ${err}`);
+        handleError(err);
       });
   }
 
@@ -142,28 +146,6 @@ function App() {
     }
   }
 
-  const movies = isLoggedIn ? (
-    <Movies
-      isLoading={isLoading}
-      moviesArray={moviesArray}
-      isRequestError={isRequestError}
-    />
-  ) : (
-    <Main />
-  );
-  const savedMovies = isLoggedIn ? (
-    <SavedMovies getSavedMovies={getSavedMovies} />
-  ) : (
-    <Main />
-  );
-  const profile = isLoggedIn ? (
-    <Profile
-      onSignOut={onSignOut}
-      onUpdateProfile={onUpdateUser}
-      isOkRequest={isOkRequest}
-    />
-  ) : null;
-
   return (
     <div className="App">
       <MoviesUserContext.Provider
@@ -190,9 +172,40 @@ function App() {
                   }
                 />
                 <Route path="/signin" element={<Login onLogin={onLogin} />} />
-                <Route path="/movies" element={movies} />
-                <Route path="/saved-movies" element={savedMovies} />
-                <Route path="/profile" element={profile} />
+                <Route
+                  path="/movies"
+                  element={
+                    <ProtectedRoute
+                      element={Movies}
+                      isLoggedIn={isLoggedIn}
+                      isLoading={isLoading}
+                      moviesArray={moviesArray}
+                      isRequestError={isRequestError}
+                    />
+                  }
+                />
+                <Route
+                  path="/saved-movies"
+                  element={
+                    <ProtectedRoute
+                      element={SavedMovies}
+                      isLoggedIn={isLoggedIn}
+                      getSavedMovies={getSavedMovies}
+                    />
+                  }
+                />
+                <Route
+                  path="/profile"
+                  element={
+                    <ProtectedRoute
+                      element={Profile}
+                      isLoggedIn={isLoggedIn}
+                      onSignOut={onSignOut}
+                      onUpdateProfile={onUpdateUser}
+                      isOkRequest={isOkRequest}
+                    />
+                  }
+                />
                 <Route
                   path="*"
                   element={<PageNotFound isLoggedIn={isLoggedIn} />}

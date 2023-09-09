@@ -77,6 +77,14 @@
   cursor: pointer;
   margin-top: 152px;
 }
+.register__button_disabled {
+  cursor: not-allowed;
+  background: #F8F8F8;
+  color: #c2c2c2;
+  border-radius: 3px;
+  border: none;
+  pointer-events: none;
+}
 
 .register__question {
   text-align: center;

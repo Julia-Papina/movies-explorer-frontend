@@ -14,3 +14,5 @@
 ### Ссылка на макет https://www.figma.com/file/6FMWkB94wE7KTkcCgUXtnC/light-1?node-id=1%3A9662&mode=dev
 
 ##### ссылка на репозиторий https://github.com/Julia-Papina/movies-explorer-frontend/blob/main/README.md
+
+## Ссылка на Pull Requests https://github.com/Julia-Papina/movies-explorer-frontend/pull/2

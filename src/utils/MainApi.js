@@ -78,8 +78,8 @@ class Api {
 }
 
 const api = new Api({
-  baseUrl: "http://localhost:3000",
-  // baseUrl: "https://api.papina-movies.nomoreparties.co",
+  //baseUrl: "http://localhost:3000",
+  baseUrl: "https://api.papina-movies.nomoreparties.co",
   headers: {
     "Content-Type": "application/json",
     "Access-Control-Allow-Credentials": "true",

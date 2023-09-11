@@ -61,12 +61,16 @@ function App() {
         onLogin(values);
       })
       .catch((err) => {
-        setPopupTooltipImage(reject);
-        setPopupTooltipTitle("Что-то пошло не так! Попробуйте ещё раз.");
-        //alert(`Возникла ошибка ${err}`);
-        handleError(err);
+        if (err === "409 Conflict") {
+          setPopupTooltipImage(reject);
+          setPopupTooltipTitle("Такой пользователь уже сущетсвует.");
+        } else {
+          setPopupTooltipImage(reject);
+          setPopupTooltipTitle("Что-то пошло не так! Попробуйте еще раз.");
+          handleError(err);
+        }
       })
-      .finally(handleInfoTooltip)
+      .finally(handleInfoTooltip);
   }
 
   function onLogin(values) {
@@ -80,20 +84,25 @@ function App() {
         navigate("/movies", { replace: true });
       })
       .catch((err) => {
-        setPopupTooltipImage(reject);
-        setPopupTooltipTitle(
-          "Ошибка авторизации. Неправильная почта или пароль. Попробуйте еще раз!"
-        );
-        handleInfoTooltip();
-        //alert(`Возникла ошибка ${err}`);
-        handleError(err);
+        if (err === "401 Unauthorized") {
+          setPopupTooltipImage(reject);
+          setPopupTooltipTitle("Ошибка авторизации! Неправильная почта или пароль.");
+        } else {
+          setPopupTooltipImage(reject);
+          setPopupTooltipTitle("Что-то пошло не так! Попробуйте еще раз.");
+          handleError(err);
+        }
       })
-      .finally(handleInfoTooltip)
+      .finally(handleInfoTooltip);
   }
 
   useEffect(() => {
     isLoggedIn &&
-      Promise.all([api.getProfile(), moviesApi.getAllMovies(), api.getSavedMovies(),])
+      Promise.all([
+        api.getProfile(),
+        moviesApi.getAllMovies(),
+        api.getSavedMovies(),
+      ])
         .then(([profileUserInfo, data, item]) => {
           setCurrentUser(profileUserInfo);
           setLoading(false);
@@ -104,9 +113,7 @@ function App() {
           setLoading(false);
           setRequestError(true);
           setPopupTooltipImage(reject);
-          setPopupTooltipTitle(
-            "Произошла ошибка, поробуйте еще раз."
-          );
+          setPopupTooltipTitle("Произошла ошибка, поробуйте еще раз.");
           handleInfoTooltip();
         });
   }, [isLoggedIn]);
@@ -119,7 +126,7 @@ function App() {
       })
       .catch((err) => {
         console.log(err);
-      }); 
+      });
   }
   //выход
   function onSignOut() {
@@ -135,7 +142,7 @@ function App() {
         setCurrentUser(data);
         setTimeout(() => {
           setIsOkRequest(true);
-        }, 2000 );
+        }, 2000);
       })
       .catch((err) => {
         console.error(`${err}`);
@@ -183,7 +190,10 @@ function App() {
                     />
                   }
                 />
-                <Route path="/signin" element={<Login onLogin={onLogin}  isLoggedIn={isLoggedIn}/>} />
+                <Route
+                  path="/signin"
+                  element={<Login onLogin={onLogin} isLoggedIn={isLoggedIn} />}
+                />
                 <Route
                   path="/movies"
                   element={

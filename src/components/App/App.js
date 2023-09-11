@@ -66,7 +66,7 @@ function App() {
         //alert(`Возникла ошибка ${err}`);
         handleError(err);
       })
-      .finally(handleInfoTooltip);
+      .finally(handleInfoTooltip)
   }
 
   function onLogin(values) {
@@ -75,6 +75,8 @@ function App() {
       .then((res) => {
         localStorage.setItem("userId", res._id);
         setIsLoggedIn(true);
+        setPopupTooltipImage(success);
+        setPopupTooltipTitle("Успешно!");
         navigate("/movies", { replace: true });
       })
       .catch((err) => {
@@ -85,7 +87,8 @@ function App() {
         handleInfoTooltip();
         //alert(`Возникла ошибка ${err}`);
         handleError(err);
-      });
+      })
+      .finally(handleInfoTooltip)
   }
 
   useEffect(() => {
@@ -100,6 +103,11 @@ function App() {
         .catch((err) => {
           setLoading(false);
           setRequestError(true);
+          setPopupTooltipImage(reject);
+          setPopupTooltipTitle(
+            "Произошла ошибка, поробуйте еще раз."
+          );
+          handleInfoTooltip();
         });
   }, [isLoggedIn]);
 

@@ -110,12 +110,14 @@ function Register(props) {
         </div>
         <div className="register__wrapper">
           <button type="submit" className={`register__button ${
-              isValid &&
+              isValid && 
               validateEmail(values.email).activeButton &&
               validateName(values.name).activeButton
                 ? ''
-                : 'register__button_disabled'
-            }`}>
+                : 'register__button_disabled' 
+            }`}
+            disabled={!isValid ? true : ''}
+            >
             Зарегистрироваться
           </button>
           <p className="register__question">

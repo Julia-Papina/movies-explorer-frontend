@@ -86,7 +86,8 @@ function Login(props) {
               isValid && validateEmail(values.email).activeButton
                 ? ''
                 : 'login__button_disabled'
-            }`}>
+            }`}
+            disabled={!isValid ? true : ''}>
             Войти
           </button>
           <p className="login__question">

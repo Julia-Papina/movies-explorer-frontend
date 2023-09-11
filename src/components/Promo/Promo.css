@@ -41,28 +41,21 @@
   max-width: 310px;
 }
 
-.promo__button {
-  width: 129px;
-  height: 36px;
-  border: 1px solid #fff;
-  box-sizing: border-box;
-  border-radius: 3px;
-  background-color: transparent;
-  color: #ffffff;
-  font-family: "Inter";
-  font-style: normal;
-  font-weight: 500;
-  font-size: 12px;
-  line-height: 16px;
-  cursor: pointer;
-}
-
 .promo__link {
+  box-sizing: border-box;
+  border: 1px solid #FFF;
+  background-color: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 16px;
+  color: white;
+  cursor: pointer;
   text-decoration: none;
-  color: #ffffff;
+  padding: 10px 20px;
+  display: inline-block;
+  border-radius: 3px;
 }
-
-.promo__button:hover {
+.promo__link:hover {
   opacity: 0.6;
 }
 

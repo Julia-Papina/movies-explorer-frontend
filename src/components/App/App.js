@@ -90,11 +90,12 @@ function App() {
 
   useEffect(() => {
     isLoggedIn &&
-      Promise.all([api.getProfile(), moviesApi.getAllMovies()])
+      Promise.all([api.getProfile(), moviesApi.getAllMovies(), api.getSavedMovies(),])
         .then(([profileUserInfo, data, item]) => {
           setCurrentUser(profileUserInfo);
           setLoading(false);
           setMoviesArray(data);
+          setUserMoviesSaved(item);
         })
         .catch((err) => {
           setLoading(false);
@@ -110,7 +111,7 @@ function App() {
       })
       .catch((err) => {
         console.log(err);
-      });
+      }); 
   }
   //выход
   function onSignOut() {
@@ -124,7 +125,9 @@ function App() {
       .editProfile(data)
       .then((data) => {
         setCurrentUser(data);
-        setIsOkRequest(true);
+        setTimeout(() => {
+          setIsOkRequest(true);
+        }, 2000 );
       })
       .catch((err) => {
         console.error(`${err}`);
@@ -168,10 +171,11 @@ function App() {
                     <Register
                       onRegister={onRegister}
                       serverError={serverError}
+                      isLoggedIn={isLoggedIn}
                     />
                   }
                 />
-                <Route path="/signin" element={<Login onLogin={onLogin} />} />
+                <Route path="/signin" element={<Login onLogin={onLogin}  isLoggedIn={isLoggedIn}/>} />
                 <Route
                   path="/movies"
                   element={

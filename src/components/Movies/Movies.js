@@ -1,20 +1,34 @@
-import { useState, useEffect } from "react"; 
+import { useState, useEffect } from "react";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import SearchForm from "../SearchForm/SearchForm";
 import Footer from "../Footer/Footer";
+import {
+  SHORT_MOVIE_DURATION,
+  WINDOW_WIDTH_MAX,
+  WINDOW_WIDTH_MEDIUM,
+  WINDOW_WIDTH_MIN,
+  MIN_ADDED_MOVIES,
+  MAX_ADDED_MOVIES,
+  SHOWED_MOVIES_MAX,
+  SHOWED_MOVIES_MEDIUM,
+  SHOWED_MOVIES_MIN,
+  SHOWED_MOVIES_MIN_OTHER,
+} from "../../utils/constants";
 
 function Movies({ isLoading, moviesArray, isRequestError }) {
   const [filteredMovies, setFilteredMovies] = useState([] || "");
   const [searchQuery, setSearchQuery] = useState("");
   const [isChecked, setIsChecked] = useState(false);
-  const [displayListMovies, setDisplayListMovies] = useState(12);
+  const [displayListMovies, setDisplayListMovies] = useState(SHOWED_MOVIES_MAX);
   const moviesList = filteredMovies.slice(0, displayListMovies);
   const localStorageMovies = JSON.parse(localStorage.getItem("moviesArray")); // локальное хранилище всех фильмов
   const localStorageShortMovies = JSON.parse(
     localStorage.getItem("shortMovies")
   ); // локальное хранище коротких фильмов
   const localStorageSearchQuery = localStorage.getItem("query"); // локальное хранилище запроса
-  const queryCorrected  = localStorageSearchQuery ? localStorageSearchQuery.slice(1, -1) : '';
+  const queryCorrected = localStorageSearchQuery
+    ? localStorageSearchQuery.slice(1, -1)
+    : "";
   const localStoragedIsChecked = localStorage.getItem("isChecked");
 
   useEffect(() => {
@@ -27,7 +41,7 @@ function Movies({ isLoading, moviesArray, isRequestError }) {
 
   useEffect(() => {
     handleLocalStorageData();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function handleLocalStorageData() {
@@ -45,14 +59,14 @@ function Movies({ isLoading, moviesArray, isRequestError }) {
   function updateDisplayCards() {
     const screenWidth = window.innerWidth;
 
-    if (screenWidth >= 1200) {
-      setDisplayListMovies(12);
-    } else if (screenWidth >= 900) {
-      setDisplayListMovies(9);
-    } else if (screenWidth >= 768) {
-      setDisplayListMovies(8);
+    if (screenWidth >= WINDOW_WIDTH_MAX) {
+      setDisplayListMovies(SHOWED_MOVIES_MAX);
+    } else if (screenWidth >= WINDOW_WIDTH_MEDIUM) {
+      setDisplayListMovies(SHOWED_MOVIES_MEDIUM);
+    } else if (screenWidth >= WINDOW_WIDTH_MIN) {
+      setDisplayListMovies(SHOWED_MOVIES_MIN);
     } else {
-      setDisplayListMovies(6);
+      setDisplayListMovies(SHOWED_MOVIES_MIN_OTHER);
     }
   }
 
@@ -79,7 +93,9 @@ function Movies({ isLoading, moviesArray, isRequestError }) {
   }
   //фильтрация короткометражек
   function filterShortMovies() {
-    return filteredMovies.filter((movie) => movie.duration < 60);
+    return filteredMovies.filter(
+      (movie) => movie.duration < SHORT_MOVIE_DURATION
+    );
   }
   // переключатель короткометражек
   function handleCheckboxChange() {
@@ -106,7 +122,9 @@ function Movies({ isLoading, moviesArray, isRequestError }) {
   // добавление карточек из списка фильмов
   const handleClickButtonMore = () => {
     setDisplayListMovies(
-      window.innerWidth > 768 ? displayListMovies + 3 : displayListMovies + 2
+      window.innerWidth > WINDOW_WIDTH_MIN
+        ? displayListMovies + MAX_ADDED_MOVIES
+        : displayListMovies + MIN_ADDED_MOVIES
     );
   };
 

@@ -1,10 +1,13 @@
 import "./Login.css";
+import React from 'react';
+import { useNavigate } from "react-router-dom";
 import logo from "../../images/logo.svg";
 import { Link } from "react-router-dom";
 import { useValidationForm } from "../../hooks/useValidationForm";
 import { validateEmail } from "../../utils/validator";
 
 function Login(props) {
+  const navigate = useNavigate();
   const { values, handleChange, errors, isValid } = useValidationForm();
   function handleSubmit(e) {
     e.preventDefault();
@@ -13,6 +16,15 @@ function Login(props) {
     }
     props.onLogin(values);
   }
+
+  React.useEffect(() => {
+    if (props.isLoggedIn) {
+      navigate('/movies');
+
+    }
+  }, [props.isLoggedIn, navigate])
+
+
   return (
     <section className="login">
       <form className="login__form" onSubmit={handleSubmit}>

@@ -3,6 +3,7 @@ import SearchForm from "../SearchForm/SearchForm";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import { MoviesUserContext } from "../../context/MoviesUserContext";
 import Footer from "../Footer/Footer";
+import {  SHORT_MOVIE_DURATION } from "../../utils/constants";
 
 function SavedMovies({ getSavedMovies }) {
   const { userMoviesSaved, setUserMoviesSaved } = useContext(MoviesUserContext);
@@ -36,7 +37,7 @@ function SavedMovies({ getSavedMovies }) {
   function handleCheckboxChange() {
     if (isChecked === false) {
       const shortMovies = userMoviesSaved.filter(
-        (movie) => movie.duration < 60
+        (movie) => movie.duration < SHORT_MOVIE_DURATION
       );
       setIsChecked(true);
       setUserMoviesSaved(shortMovies);

@@ -1,17 +1,26 @@
 import "./Register.css";
-import { Link } from "react-router-dom";
+import React from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 import logo from "../../images/logo.svg";
 import { useValidationForm } from "../../hooks/useValidationForm";
 import { validateName, validateEmail } from "../../utils/validator";
 
 function Register(props) {
+  const navigate = useNavigate();
   const { values, errors, isValid, handleChange } = useValidationForm();
 
   function handleSubmit(e) {
     e.preventDefault();
     props.onRegister(values);
   }
+
+  React.useEffect(() => {
+    if (props.isLoggedIn) {
+      navigate('/movies');
+
+    }
+  }, [props.isLoggedIn, navigate])
 
   return (
     <section className="register">

@@ -6,8 +6,8 @@ function checkResponse(res) {
   }
 }
 
-export const BASE_URL = "http://localhost:3000";
-//export const BASE_URL = "https://api.papina-movies.nomoreparties.co";
+//export const BASE_URL = "http://localhost:3000";
+export const BASE_URL = "https://api.papina-movies.nomoreparties.co";
 export const register = (email, password, name) => {
   return fetch(`${BASE_URL}/signup`, {
     method: "POST",

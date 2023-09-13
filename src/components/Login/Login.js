@@ -1,5 +1,5 @@
 import "./Login.css";
-import React from 'react';
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "../../images/logo.svg";
 import { Link } from "react-router-dom";
@@ -9,8 +9,10 @@ import { validateEmail } from "../../utils/validator";
 function Login(props) {
   const navigate = useNavigate();
   const { values, handleChange, errors, isValid } = useValidationForm();
+
   function handleSubmit(e) {
     e.preventDefault();
+
     if (!values.email || !values.password) {
       return;
     }
@@ -19,11 +21,9 @@ function Login(props) {
 
   React.useEffect(() => {
     if (props.isLoggedIn) {
-      navigate('/movies');
-
+      navigate("/movies");
     }
-  }, [props.isLoggedIn, navigate])
-
+  }, [props.isLoggedIn, navigate]);
 
   return (
     <section className="login">
@@ -82,12 +82,15 @@ function Login(props) {
           </label>
         </div>
         <div className="login__wrapper">
-          <button type="submit" className={`login__button ${
+          <button
+            type="submit"
+            className={`login__button ${
               isValid && validateEmail(values.email).activeButton
-                ? ''
-                : 'login__button_disabled'
+                ? ""
+                : "login__button_disabled"
             }`}
-            disabled={!isValid ? true : ''}>
+            disabled={!isValid}
+          >
             Войти
           </button>
           <p className="login__question">

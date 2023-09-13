@@ -15,12 +15,14 @@ import {
   SHOWED_MOVIES_MIN_OTHER,
 } from "../../utils/constants";
 
-function Movies({ isLoading, moviesArray, isRequestError }) {
-  const [filteredMovies, setFilteredMovies] = useState([] || "");
+function Movies({ isLoading, moviesArray, isRequestError, getSavedMovies }) {
+  const [filteredMovies, setFilteredMovies] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [isChecked, setIsChecked] = useState(false);
   const [displayListMovies, setDisplayListMovies] = useState(SHOWED_MOVIES_MAX);
-  const moviesList = filteredMovies.slice(0, displayListMovies);
+ // const [isMoviesNotFound, setIsMoviesNotFound] = useState(false);
+ 
+ const moviesList = filteredMovies.slice(0, displayListMovies);
   const localStorageMovies = JSON.parse(localStorage.getItem("moviesArray")); // локальное хранилище всех фильмов
   const localStorageShortMovies = JSON.parse(
     localStorage.getItem("shortMovies")
@@ -30,6 +32,11 @@ function Movies({ isLoading, moviesArray, isRequestError }) {
     ? localStorageSearchQuery.slice(1, -1)
     : "";
   const localStoragedIsChecked = localStorage.getItem("isChecked");
+
+  useEffect(() => {
+    getSavedMovies();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (localStoragedIsChecked) {

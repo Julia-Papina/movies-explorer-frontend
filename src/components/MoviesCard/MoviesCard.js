@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useContext } from "react"; //useState, , useEffect
 import "./MoviesCard.css";
 import { timeConverter } from "../../utils/timeConverter";
 import { BASE_IMG_LINK } from "../../utils/constants";
@@ -7,56 +7,50 @@ import api from "../../utils/MainApi";
 import { MoviesUserContext } from "../../context/MoviesUserContext";
 
 function MoviesCard({ movie }) {
-  const [isLiked, setIsLike] = useState(false);
-  const { userMoviesSaved, setUserMoviesSaved } = useContext(MoviesUserContext);
   const { pathname } = useLocation();
+  const { userMoviesSaved, setUserMoviesSaved } = useContext(MoviesUserContext);
 
-  useEffect(() => {
-    setIsLike(
-      userMoviesSaved.some((userMovie) => userMovie.nameRU === movie.nameRU)
-    );
-  }, [userMoviesSaved, movie.nameRU]);
+  const saveMovie = userMoviesSaved
+    ? userMoviesSaved.find((item) => item.movieId === movie.id)
+    : "";
 
-  function toggleButtonSave() {
-    const savedMovie = userMoviesSaved.find(
-      (userMovie) => userMovie.nameRU === movie.nameRU
-    );
-    if (!savedMovie) {
-      handleSaveMovie();
+  const isLiked = userMoviesSaved
+    ? userMoviesSaved.some((i) => i.movieId === movie.id)
+    : false;
+
+  const toggleButtonSave = (movie, isLiked, id) => {
+    if (isLiked) {
+      handleRemoveMovie(id);
     } else {
-      handleRemoveMovie(savedMovie);
+      api
+        .saveMovie(movie)
+        .then((newSaveMovie) => {
+          setUserMoviesSaved([...userMoviesSaved, newSaveMovie]);
+        })
+        .catch((err) => console.log(`Возникла ошибка ${err}`));
     }
-  }
-
-  //Сохранить фильм
-  function handleSaveMovie() {
-    api
-      .saveMovie(movie)
-      .then(() => {
-        setIsLike(true);
-        setUserMoviesSaved([...userMoviesSaved, movie]);
-      })
-      .catch((err) => console.log(`Возникла ошибка ${err}`));
-  }
-
+  };
   // удалить фильм
-  function handleRemoveMovie() {
+  function handleRemoveMovie(id) {
     api
-      .deleteMovie(movie._id)
+      .deleteMovie(id)
       .then(() => {
-        setIsLike(false);
-        setUserMoviesSaved(
-          userMoviesSaved.filter((userMovie) => userMovie._id !== movie._id)
-        );
+        setUserMoviesSaved(userMoviesSaved.filter((m) => m._id !== id));
       })
       .catch((err) => console.log(`Возникла ошибка ${err}`));
   }
 
+  const handleLikeClick = () => {
+    toggleButtonSave(movie, isLiked, saveMovie?._id);
+  };
+  const handleDeleteClick = () => {
+    handleRemoveMovie(movie._id);
+  };
   const buttontElement = isLiked ? (
     <button
       type="submit"
       className="movies-card__button movies-card__button_typ_save"
-      onClick={toggleButtonSave}
+      onClick={handleLikeClick}
     >
       &#10003;
     </button>
@@ -64,7 +58,7 @@ function MoviesCard({ movie }) {
     <button
       type="submit"
       className="movies-card__button"
-      onClick={toggleButtonSave}
+      onClick={handleLikeClick}
     >
       Сохранить
     </button>
@@ -92,16 +86,17 @@ function MoviesCard({ movie }) {
           />
         </Link>
       </div>
-      {pathname === "/movies" ? buttontElement : null}
-      {pathname === "/saved-movies" ? (
+      {pathname === "/movies" && buttontElement}
+      {pathname === "/saved-movies" && (
         <button
+          onClick={handleDeleteClick}
           type="button"
           className="movies-card__button"
-          onClick={handleRemoveMovie}
+          alt="Крестик"
         >
-          &#215;
+          ✗
         </button>
-      ) : null}
+      )}
     </article>
   );
 }

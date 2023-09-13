@@ -82,11 +82,14 @@ function App() {
         setPopupTooltipImage(success);
         setPopupTooltipTitle("Успешно!");
         navigate("/movies", { replace: true });
+        
       })
       .catch((err) => {
         if (err === "401 Unauthorized") {
           setPopupTooltipImage(reject);
-          setPopupTooltipTitle("Ошибка авторизации! Неправильная почта или пароль.");
+          setPopupTooltipTitle(
+            "Ошибка авторизации! Неправильная почта или пароль."
+          );
         } else {
           setPopupTooltipImage(reject);
           setPopupTooltipTitle("Что-то пошло не так! Попробуйте еще раз.");
@@ -101,15 +104,13 @@ function App() {
       Promise.all([
         api.getProfile(),
         moviesApi.getAllMovies(),
-        api.getSavedMovies(),
       ])
-        .then(([profileUserInfo, data, item]) => {
+        .then(([profileUserInfo, data]) => {
           setCurrentUser(profileUserInfo);
           setLoading(false);
           setMoviesArray(data);
-          setUserMoviesSaved(item);
         })
-        .catch((err) => {
+        .catch(() => {
           setLoading(false);
           setRequestError(true);
           setPopupTooltipImage(reject);
@@ -125,7 +126,10 @@ function App() {
         setUserMoviesSaved(data);
       })
       .catch((err) => {
-        console.log(err);
+        setPopupTooltipImage(reject);
+        setPopupTooltipTitle("Что-то пошло не так! Попробуйте еще раз.");
+        handleInfoTooltip();
+        handleError(err);
       });
   }
   //выход
@@ -203,6 +207,7 @@ function App() {
                       isLoading={isLoading}
                       moviesArray={moviesArray}
                       isRequestError={isRequestError}
+                      getSavedMovies={getSavedMovies}
                     />
                   }
                 />

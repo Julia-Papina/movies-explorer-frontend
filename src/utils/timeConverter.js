@@ -3,7 +3,7 @@ export function timeConverter(mins) {
   const minutes = mins % 60;
 
   if (minutes > 0) {
-    return `${hours}ч ${minutes}м`;
+    return `${hours}ч${minutes}м`;
   } else {
     return `${hours}ч`;
   }

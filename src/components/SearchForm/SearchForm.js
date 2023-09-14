@@ -1,21 +1,55 @@
+import React, { useState } from "react";
 import "./SearchForm.css";
 import FilterCheckbox from "../FilterCheckbox/FilterCheckbox";
 
-function SearchForm(props) {
+function SearchForm({
+  searchQuery,
+  handleSearchChange,
+  onSearchClick,
+  onToggleLike,
+  defaultValue,
+  isChecked,
+}) {
+  const [validationMessage, setValidationMessage] = useState("");
+
+  const handleSubmit = (evt) => {
+    evt.preventDefault();
+    if (searchQuery === "") {
+      setValidationMessage("Нужно ввести ключевое слово");
+      return;
+    }
+    setValidationMessage("");
+    onSearchClick();
+  }
+
   return (
     <section className="search-form">
       <div className="search-form__container">
-        <form className="search-form__form">
+        <form className="search-form__form" onSubmit={handleSubmit}>
           <fieldset className="search-form__field">
             <input
-              type="text"
+              type="search"
+              id="search-input"
               placeholder="Фильм"
               className="search-form__input"
-              required
+              defaultValue={defaultValue}
+              onChange={handleSearchChange}
+              autoComplete="off"
             />
-            <button className="search-form__button">Поиск</button>
+            <button className="search-form__button" type="submit">
+              Поиск
+            </button>
           </fieldset>
-          <FilterCheckbox text={"Короткометражки"} />
+          {validationMessage && (
+            <span className="search-form__validation">
+              Нужно ввести ключевое слово
+            </span>
+          )}
+          <FilterCheckbox
+            text={"Короткометражки"}
+            onToggleLike={onToggleLike}
+            isChecked={isChecked}
+          />
         </form>
       </div>
     </section>

@@ -54,7 +54,10 @@
   margin: 6px 0 4px 0;
   display: block;
   max-width: 396px;
-  /*  opacity: 0;*/
+  opacity: 0;
+}
+.register__form-error_active {
+  opacity: 1;
 }
 .register__form-input:focus {
   border-bottom-color: #4285f4;
@@ -73,6 +76,14 @@
   border: none;
   cursor: pointer;
   margin-top: 152px;
+}
+.register__button_disabled {
+  cursor: not-allowed;
+  background: #F8F8F8;
+  color: #c2c2c2;
+  border-radius: 3px;
+  border: none;
+  pointer-events: none;
 }
 
 .register__question {

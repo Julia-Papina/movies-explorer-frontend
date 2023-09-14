@@ -1,14 +1,38 @@
+import React, { useContext } from "react";
 import "./Profile.css";
-import Header from "../Header/Header";
 import { Link } from "react-router-dom";
+import { CurrentUserContext } from "../../context/CurrentUserContext";
+import { validateEmail, validateName } from "../../utils/validator";
+import { useValidationForm } from "../../hooks/useValidationForm";
 
-function Profile() {
+function Profile({ onSignOut, onUpdateProfile, serverError, isOkRequest }) {
+  const { values, handleChange, setValues } = useValidationForm();
+  const currentUser = useContext(CurrentUserContext);
+  const [showSuccessMessage, setShowSuccessMessage] = React.useState(false);
+  const [showSaveButton, setShowSaveButton] = React.useState(false);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onUpdateProfile(values);
+    setShowSaveButton(false);
+    setShowSuccessMessage(true);
+  };
+
+  const handleShowSaveButton = (e) => {
+    e.preventDefault();
+    setShowSaveButton(true);
+    setShowSuccessMessage(false);
+  };
+
+  React.useEffect(() => {
+    setValues(currentUser);
+  }, [currentUser, setValues]);
+
   return (
     <>
-      <Header isAuth={true} />
       <section className="profile">
-        <h2 className="profile__header">Привет, Виталий!</h2>
-        <form className="profile__form" noValidate>
+        <h2 className="profile__header">Привет, {currentUser.name}!</h2>
+        <form className="profile__form" onSubmit={handleSubmit} noValidate>
           <div className="profile__input-wrapper">
             <label htmlFor="name" className="profile__label">
               Имя
@@ -21,11 +45,15 @@ function Profile() {
               type="name"
               minLength="2"
               maxLength="30"
-              defaultValue={"Виталий" || ""}
+              defaultValue={currentUser.name}
               required
+              onChange={handleChange}
+              disabled={!showSaveButton}
             />
           </div>
-          <span className="profile__input-error">Произошла ошибка...</span>
+          <span className={`profile__input-error profile__input-error_active`}>
+            {validateName(values.name).error}
+          </span>
 
           <div className="profile__input-wrapper">
             <label htmlFor="email" className="profile__label">
@@ -39,19 +67,65 @@ function Profile() {
               type="email"
               minLength="2"
               maxLength="30"
-              defaultValue={"pochta@yandex.ru" || ""}
+              defaultValue={currentUser.email}
               required
+              onChange={handleChange}
+              disabled={!showSaveButton}
             />
           </div>
-          <span className="profile__input-error">Произошла ошибка...</span>
-        </form>
+          <span className={`profile__input-error profile__input-error_active`}>
+            {validateEmail(values.email).error}
+          </span>
 
-        <button type="button" className="profile__register">
-          Редактировать
-        </button>
-        <Link to="/signin" className="profile__exit">
-          Выйти из аккаунта
-        </Link>
+          <div className="profile__buttons-wrapper">
+            {isOkRequest ? (
+              <span
+                className={`profile__success-message ${
+                  showSuccessMessage ? "" : "profile__success-message_disabled"
+                }`}
+              >
+                Обновление данных прошло успешно!
+              </span>
+            ) : (
+              <span
+                className={`profile__error-text ${
+                  serverError ? "" : "profile__error-text_disabled"
+                }`}
+              >
+                При обновлении профиля произошла ошибка.
+              </span>
+            )}
+
+            {showSaveButton ? (
+              <button
+                type="submit"
+                onSubmit={handleSubmit}
+                className={`profile__save ${
+                  (values.name === currentUser.name &&
+                    values.email === currentUser.email) ||
+                  !validateName(values.name).activeButton ||
+                  !validateEmail(values.email).activeButton
+                    ? "profile__save_disabled"
+                    : ""
+                }`}
+              >
+                Сохранить
+              </button>
+            ) : (
+              <button
+                type="button"
+                className="profile__register"
+                onClick={handleShowSaveButton}
+              >
+                Редактировать
+              </button>
+            )}
+
+            <Link to="/" className="profile__exit" onClick={onSignOut}>
+              Выйти из аккаунта
+            </Link>
+          </div>
+        </form>
       </section>
     </>
   );

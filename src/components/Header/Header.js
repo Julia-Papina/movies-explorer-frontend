@@ -5,8 +5,7 @@ import logo from "../../images/logo.svg";
 import { useLocation } from "react-router-dom";
 import Navigation from "../Navigation/Navigation";
 
-
-function Header({ isAuth, props }) {
+function Header({ isLoggedIn }) {
   const { pathname } = useLocation();
   const headerStyle = pathname === "/" ? "header header_type_blue" : "header";
 
@@ -17,7 +16,9 @@ function Header({ isAuth, props }) {
           <img className="header__logo" src={logo} alt="Логотип" />
         </Link>
 
-        { !isAuth ? (
+        {isLoggedIn && pathname === "/" ? (
+          <Navigation />
+        ) : pathname === "/" ? (
           <div className="header__nuv">
             <Link className="header__button" to={"/signup"}>
               Регистрация
@@ -30,7 +31,7 @@ function Header({ isAuth, props }) {
             </Link>
           </div>
         ) : (
-          <Navigation  />
+          <Navigation />
         )}
       </div>
     </header>

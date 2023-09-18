@@ -23,11 +23,11 @@ function Promo() {
             />
           </div>
         </div>
-        <button className="promo__button" type="button">
+        <nav className="promo__nav">
           <a className="promo__link" href="#about-project">
             Узнать больше
           </a>
-        </button>
+        </nav>
       </div>
     </section>
   );

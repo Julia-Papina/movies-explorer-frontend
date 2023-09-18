@@ -31,7 +31,7 @@ function Portfolio() {
             <Link
               className="portfolio__link"
               target="_blank"
-              to={"https://julia-papina.github.io/mesto-react/"}
+              to={"https://julia-papina.github.io/react-mesto-auth/"}
             >
               Одностраничное приложение
               <span className="portfolio__arrow">↗</span>

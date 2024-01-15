@@ -3,6 +3,8 @@
 
 ### Приложение Movies Explorer - сервис с поиском фильмов по базе данных BeatFilm и сохранением их в личном кабинете.<br>
 
+<img src="https://github.com/Julia-Papina/Julia-Papina/blob/main/Movies.gif" alt="gif" width="600">
+
 ###  Структура приложения
 Полностью приложение состоит из двух частей:
 
